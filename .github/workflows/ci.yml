@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches-ignore: [audit,deploy]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        perl-version: ['5.30', '5']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Download prebuilt pkgcraft-c library
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{ secrets.PKGCRAFT_CI_TOKEN }}
+        repo: pkgcraft/pkgcraft-c
+        branch: main
+        workflow: ci.yml
+        name: pkgcraft-c-${{ runner.os }}
+        path: pkgcraft
+
+    - name: Set up Perl ${{ matrix.perl-version }}
+      uses: shogo82148/actions-setup-perl@v1
+      id: perl
+      with:
+        perl-version: ${{ matrix.perl-version }}
+        enable-modules-cache: false
+
+    - name: Set up cache
+      uses: actions/cache@v3
+      with:
+        path: local
+        key: v1-${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
+        restore-keys: v1-${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
+
+    - name: Install deps
+      run: |
+        perl Makefile.PL
+        cpanm -L local --installdeps .
+
+    - name: Build and test module
+      run: |
+        make
+        make test

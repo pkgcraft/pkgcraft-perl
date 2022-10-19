@@ -1,0 +1,33 @@
+=head1 NAME
+
+Pkgcraft - Perl extension for pkgcraft
+
+=head1 SYNOPSIS
+
+  use Pkgcraft;
+
+=head1 DESCRIPTION
+
+TODO
+
+=head2 EXPORT
+
+None by default.
+
+=head1 SEE ALSO
+
+TODO
+
+=head1 AUTHOR
+
+Tim Harder <radhermit@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2022 by Tim Harder
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.36.0 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut

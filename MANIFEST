@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Pkgcraft.t
+lib/Pkgcraft.pm
+lib/Pkgcraft.pod
