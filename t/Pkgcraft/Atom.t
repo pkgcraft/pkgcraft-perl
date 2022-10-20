@@ -2,4 +2,4 @@ use strict;
 use warnings;
 
 use Test::More tests => 1;
-BEGIN { use_ok('Pkgcraft::Atom') };
+BEGIN { use_ok('Pkgcraft::Atom') }
