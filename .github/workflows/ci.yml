@@ -52,3 +52,25 @@ jobs:
       run: |
         make
         make test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Perl
+      uses: shogo82148/actions-setup-perl@v1
+      id: perl
+      with:
+        perl-version: 5
+        enable-modules-cache: false
+
+    - name: Install perltidy
+      run: cpanm -n Perl::Tidy
+
+    - name: Run perltidy
+      shell: bash
+      run: |
+        shopt -s extglob globstar nullglob
+        perltidy --pro=.../.perltidyrc -b -bext='/' **/*.p[lm] **/*.t && git diff --exit-code
