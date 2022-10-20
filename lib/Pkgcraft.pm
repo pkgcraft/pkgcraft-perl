@@ -5,7 +5,7 @@ use strict;
 use version;
 use warnings;
 
-use FFI::CheckLib;
+use FFI::CheckLib qw(find_lib_or_die);
 use FFI::Platypus;
 
 our $VERSION = '0.01';
