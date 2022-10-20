@@ -64,10 +64,9 @@ jobs:
       id: perl
       with:
         perl-version: 5
-        enable-modules-cache: false
-
-    - name: Install perltidy
-      run: cpanm -n Perl::Tidy
+        install-modules-with: cpanm
+        install-modules-args: -n
+        install-modules: Perl::Tidy
 
     - name: Run perltidy
       shell: bash
