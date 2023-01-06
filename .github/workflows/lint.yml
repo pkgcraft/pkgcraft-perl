@@ -2,9 +2,18 @@ name: lint
 
 on:
   push:
-    branches-ignore: [audit,deploy]
+    branches-ignore: [deploy]
+    paths:
+      - "**/*.pl"
+      - "**/*.pm"
+      - "**/*.t"
+      - ".github/workflows/lint.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "**/*.pl"
+      - "**/*.pm"
+      - "**/*.t"
 
 jobs:
   lint:
