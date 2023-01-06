@@ -7,7 +7,7 @@ WriteMakefile(
         'FFI::CheckLib' => '0.31',
         'FFI::Platypus' => '2.00',
     },
-    MIN_PERL_VERSION  => '5.030',
+    MIN_PERL_VERSION  => '5.30.0',
     ABSTRACT_FROM     => 'lib/Pkgcraft.pod',
     AUTHOR            => 'Tim Harder <radhermit@gmail.com>',
     LICENSE           => 'perl',
