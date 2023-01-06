@@ -14,14 +14,50 @@ on:
       - "lib/**"
       - "t/**"
       - "Makefile.PL"
+  workflow_dispatch:
+    inputs:
+      perl-version:
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      perl-version:
+        required: false
+        type: string
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      perl-version: ${{ steps.vars.outputs.perl-version }}
+    steps:
+    - name: Checkout code to determine the minimum supported perl version
+      if: ${{ inputs.perl-version == '' }}
+      uses: actions/checkout@v3
+      with:
+        repository: pkgcraft/pkgcraft-perl
+
+    - name: Set perl versions to test against
+      id: vars
+      run: |
+        if [[ -n "${{ inputs.perl-version }}" ]]; then
+          echo "perl-version=$(jq 'split(",")' -Rc <(echo '${{ inputs.perl-version }}'))" >> $GITHUB_OUTPUT
+        else
+          min_ver=$(sed -rn "/^\s*MIN_PERL_VERSION / s/.*=> '([0-9](.[0-9]+)*)',/\1/p" Makefile.PL)
+          if [[ -n ${min_ver} ]]; then
+            echo "perl-version=['${min_ver}', '5']" >> $GITHUB_OUTPUT
+          else
+            exit 1
+          fi
+        fi
+
   test:
+    needs: setup
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        perl-version: ['5.30', '5']
+        perl-version: ${{ fromJson(needs.setup.outputs.perl-version) }}
 
     steps:
     - name: Checkout code
