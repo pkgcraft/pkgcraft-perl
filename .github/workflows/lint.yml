@@ -30,6 +30,7 @@ jobs:
         install-modules-with: cpanm
         install-modules-args: -n
         install-modules: Perl::Tidy
+        working-directory: ..
 
     - name: Run perltidy
       shell: bash
