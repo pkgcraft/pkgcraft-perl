@@ -52,8 +52,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: local
-        key: v1-${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
-        restore-keys: v1-${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
+        key: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
 
     - name: Install deps
       run: |
