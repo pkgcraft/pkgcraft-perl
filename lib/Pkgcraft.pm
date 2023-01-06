@@ -26,8 +26,8 @@ $ffi->lib(find_lib_or_die(
 
     my $f          = $ffi->function('pkgcraft_lib_version', [] => 'string');
     my $ver        = version->parse($f->call());
-    my $MINVERSION = version->parse('0.0.2');
-    my $MAXVERSION = version->parse('0.0.2');
+    my $MINVERSION = version->parse('0.0.4');
+    my $MAXVERSION = version->parse('0.0.4');
 
     return ($ver >= $MINVERSION and $ver <= $MAXVERSION);
   },
