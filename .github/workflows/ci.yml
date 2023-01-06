@@ -2,9 +2,18 @@ name: CI
 
 on:
   push:
-    branches-ignore: [audit,deploy]
+    branches-ignore: [deploy]
+    paths:
+      - "lib/**"
+      - "t/**"
+      - "Makefile.PL"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "lib/**"
+      - "t/**"
+      - "Makefile.PL"
 
 jobs:
   test:
@@ -17,6 +26,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        repository: pkgcraft/pkgcraft-perl
+        submodules: true
 
     - name: Download prebuilt pkgcraft-c library
       id: download-artifact
