@@ -85,17 +85,13 @@ jobs:
       id: perl
       with:
         perl-version: ${{ matrix.perl-version }}
-        enable-modules-cache: false
-
-    - name: Set up cache
-      uses: actions/cache@v3
-      with:
-        path: local
-        key: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
-        restore-keys: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
+        install-modules-with: cpanm
+        install-modules-args: -n
+        install-modules: Devel::Cover
+        working-directory: ..
 
     - name: Install deps
-      run: cpanm -L local --installdeps .
+      run: cpanm -L ../local --installdeps .
 
     - name: Override build variables
       run: |
@@ -107,4 +103,15 @@ jobs:
       run: |
         perl Makefile.PL
         make
-        make test
+        PERL5OPT=-MDevel::Cover make test
+
+    - name: Create coverage report
+      run: cover -report codecov
+      env:
+        PERL5LIB: 'perllib:../local/lib/perl5'
+
+    - name: Upload coverage to Codecov
+      if: ${{ inputs.perl-version == '' }}
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.json
