@@ -26,8 +26,6 @@ ok($atom eq "cat/pkg");
 ok(sprintf("%s", $atom) eq "cat/pkg");
 
 $atom = Pkgcraft::Atom->new("cat/pkg[u1,u2]");
-my @use = $atom->use;
-my @foo = qw(u1 u2);
-is_deeply(\@use, \@foo);
+is_deeply($atom->use, ["u1", "u2"]);
 
 done_testing();

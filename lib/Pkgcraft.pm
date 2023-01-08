@@ -56,7 +56,7 @@ sub string_array {
       push @a, $ffi->cast('opaque' => 'string', $arr->[$elem]);
     }
     pkgcraft_str_array_free($arr);
-    return @a;
+    return \@a;
   }
   return;
 }
