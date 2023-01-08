@@ -41,6 +41,13 @@ package Pkgcraft::Cpv {
     return Pkgcraft::Atom::Version->_from_ptr($ptr);
   }
 
+  $ffi->attach(pkgcraft_atom_revision => ['atom_t'] => 'c_str');
+
+  sub revision {
+    my $self = shift;
+    return _c_str_to_string(pkgcraft_atom_revision($self->{_ptr}));
+  }
+
   use overload
     fallback => 0,
     '<'      => sub { $_[0]->cmp($_[1]) == -1; },
