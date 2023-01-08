@@ -112,4 +112,11 @@ package Pkgcraft::Atom {
     my $self = shift;
     return _c_str_to_string(pkgcraft_atom_subslot($self->{_ptr}));
   }
+
+  $ffi->attach(pkgcraft_atom_repo => ['atom_t'] => 'c_str');
+
+  sub repo {
+    my $self = shift;
+    return _c_str_to_string(pkgcraft_atom_repo($self->{_ptr}));
+  }
 }
