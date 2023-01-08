@@ -30,24 +30,20 @@ sub revision {
   return pkgcraft_version_revision($self->{_ptr});
 }
 
+$ffi->attach(pkgcraft_version_cmp => ['version_t', 'version_t'] => 'int');
+
 use overload
   fallback => 0,
-  '<'      => sub { $_[0]->cmp($_[1]) == -1; },
-  '<='     => sub { $_[0]->cmp($_[1]) <= 0; },
-  '=='     => sub { $_[0]->cmp($_[1]) == 0; },
-  '!='     => sub { $_[0]->cmp($_[1]) != 0; },
-  '>='     => sub { $_[0]->cmp($_[1]) >= 0; },
-  '>'      => sub { $_[0]->cmp($_[1]) == 1; },
+  '<=>'    => sub { pkgcraft_version_cmp($_[0], $_[1]); },
+  '<'      => sub { pkgcraft_version_cmp($_[0], $_[1]) == -1; },
+  '<='     => sub { pkgcraft_version_cmp($_[0], $_[1]) <= 0; },
+  '=='     => sub { pkgcraft_version_cmp($_[0], $_[1]) == 0; },
+  '!='     => sub { pkgcraft_version_cmp($_[0], $_[1]) != 0; },
+  '>='     => sub { pkgcraft_version_cmp($_[0], $_[1]) >= 0; },
+  '>'      => sub { pkgcraft_version_cmp($_[0], $_[1]) == 1; },
   'eq'     => sub { $_[0]->stringify eq $_[1]; },
   'ne'     => sub { $_[0]->stringify ne $_[1]; },
   '""'     => 'stringify';
-
-$ffi->attach(pkgcraft_version_cmp => ['version_t', 'version_t'] => 'int');
-
-sub cmp {
-  my ($self, $other) = @_;
-  return pkgcraft_version_cmp($self->{_ptr}, $other->{_ptr});
-}
 
 $ffi->attach(pkgcraft_version_str => ['version_t'] => 'c_str');
 

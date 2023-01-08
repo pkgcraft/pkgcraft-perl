@@ -47,24 +47,20 @@ package Pkgcraft::Cpv {
     return pkgcraft_atom_revision($self->{_ptr});
   }
 
+  $ffi->attach(pkgcraft_atom_cmp => ['atom_t', 'atom_t'] => 'int');
+
   use overload
     fallback => 0,
-    '<'      => sub { $_[0]->cmp($_[1]) == -1; },
-    '<='     => sub { $_[0]->cmp($_[1]) <= 0; },
-    '=='     => sub { $_[0]->cmp($_[1]) == 0; },
-    '!='     => sub { $_[0]->cmp($_[1]) != 0; },
-    '>='     => sub { $_[0]->cmp($_[1]) >= 0; },
-    '>'      => sub { $_[0]->cmp($_[1]) == 1; },
+    '<=>'    => sub { pkgcraft_atom_cmp($_[0], $_[1]); },
+    '<'      => sub { pkgcraft_atom_cmp($_[0], $_[1]) == -1; },
+    '<='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) <= 0; },
+    '=='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) == 0; },
+    '!='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) != 0; },
+    '>='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) >= 0; },
+    '>'      => sub { pkgcraft_atom_cmp($_[0], $_[1]) == 1; },
     'eq'     => sub { $_[0]->stringify eq $_[1]; },
     'ne'     => sub { $_[0]->stringify ne $_[1]; },
     '""'     => 'stringify';
-
-  $ffi->attach(pkgcraft_atom_cmp => ['atom_t', 'atom_t'] => 'int');
-
-  sub cmp {
-    my ($self, $other) = @_;
-    return pkgcraft_atom_cmp($self->{_ptr}, $other->{_ptr});
-  }
 
   $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'c_str');
 
