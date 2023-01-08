@@ -16,9 +16,7 @@ package Pkgcraft::Cpv {
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
-    else {
-      die "invalid CPV: $str";
-    }
+    die "invalid CPV: $str";
   }
 
   $ffi->attach(pkgcraft_atom_category => ['atom_t'] => 'c_str');
@@ -77,9 +75,7 @@ package Pkgcraft::Atom {
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
-    else {
-      die "invalid atom: $str";
-    }
+    die "invalid atom: $str";
   }
 
   $ffi->attach(pkgcraft_atom_slot => ['atom_t'] => 'c_str');

@@ -13,9 +13,7 @@ sub new {
   if (defined $ptr) {
     return bless {_ptr => $ptr, ref => 0}, $class;
   }
-  else {
-    die "invalid version: $str";
-  }
+  die "invalid version: $str";
 }
 
 $ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
@@ -26,9 +24,7 @@ sub _from_ptr {
   if (defined $ptr) {
     return bless {_ptr => $ptr, ref => 1}, $class;
   }
-  else {
-    return;
-  }
+  return;
 }
 
 sub revision {
