@@ -34,12 +34,14 @@ $ffi->lib(find_lib_or_die(
 ));
 
 $ffi->attach(pkgcraft_str_free => ['opaque']);
-$ffi->custom_type('c_str' => {
-  native_type => 'opaque',
-  native_to_perl => sub {
-    my ($ptr) = @_;
-    my $str = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+$ffi->custom_type(
+  'c_str' => {
+    native_type    => 'opaque',
+    native_to_perl => sub {
+      my ($ptr) = @_;
+      my $str = $ffi->cast('opaque' => 'string', $ptr);
+      pkgcraft_str_free($ptr);
+      return $str;
+    }
   }
-});
+);
