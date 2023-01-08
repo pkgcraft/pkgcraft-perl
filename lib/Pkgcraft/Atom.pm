@@ -23,14 +23,14 @@ package Pkgcraft::Cpv {
 
   sub category {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_category($self->{_ptr}));
+    return pkgcraft_atom_category($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_package => ['atom_t'] => 'c_str');
 
   sub package {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_package($self->{_ptr}));
+    return pkgcraft_atom_package($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_version => ['atom_t'] => 'version_t');
@@ -45,7 +45,7 @@ package Pkgcraft::Cpv {
 
   sub revision {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_revision($self->{_ptr}));
+    return pkgcraft_atom_revision($self->{_ptr});
   }
 
   use overload
@@ -70,7 +70,7 @@ package Pkgcraft::Cpv {
 
   sub stringify {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_str($self->{_ptr}));
+    return pkgcraft_atom_str($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_free => ['atom_t']);
@@ -103,27 +103,27 @@ package Pkgcraft::Atom {
 
   sub slot {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_slot($self->{_ptr}));
+    return pkgcraft_atom_slot($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_subslot => ['atom_t'] => 'c_str');
 
   sub subslot {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_subslot($self->{_ptr}));
+    return pkgcraft_atom_subslot($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_repo => ['atom_t'] => 'c_str');
 
   sub repo {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_repo($self->{_ptr}));
+    return pkgcraft_atom_repo($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_cpv => ['atom_t'] => 'c_str');
 
   sub cpv {
     my $self = shift;
-    return _c_str_to_string(pkgcraft_atom_cpv($self->{_ptr}));
+    return pkgcraft_atom_cpv($self->{_ptr});
   }
 }

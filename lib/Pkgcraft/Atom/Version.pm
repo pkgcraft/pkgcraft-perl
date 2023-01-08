@@ -16,8 +16,6 @@ sub new {
   die "invalid version: $str";
 }
 
-$ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
-
 sub _from_ptr {
   my $class = shift;
   my $ptr   = shift;
@@ -27,9 +25,11 @@ sub _from_ptr {
   return;
 }
 
+$ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
+
 sub revision {
   my $self = shift;
-  return _c_str_to_string(pkgcraft_version_revision($self->{_ptr}));
+  return pkgcraft_version_revision($self->{_ptr});
 }
 
 use overload
@@ -54,7 +54,7 @@ $ffi->attach(pkgcraft_version_str => ['version_t'] => 'c_str');
 
 sub stringify {
   my $self = shift;
-  return _c_str_to_string(pkgcraft_version_str($self->{_ptr}));
+  return pkgcraft_version_str($self->{_ptr});
 }
 
 $ffi->attach(pkgcraft_version_free => ['version_t']);
