@@ -2,7 +2,38 @@ package Pkgcraft::Atom::Version;
 
 use Pkgcraft;
 
-$ffi->mangler(sub {
-  my ($name) = @_;
-  "pkgcraft_version_$name";
-});
+$ffi->type('opaque' => 'version_t');
+
+$ffi->attach(pkgcraft_version_new => ['string'] => 'version_t');
+
+sub new {
+  my $class = shift;
+  my $str   = shift;
+  my $ptr   = pkgcraft_version_new($str);
+  if (defined $ptr) {
+    my $self = bless {_ptr => $ptr, ref => 0}, $class;
+    return $self;
+  }
+  else {
+    die "invalid version: $str";
+  }
+}
+
+$ffi->attach(pkgcraft_version_revision => ['version_t'] => 'opaque');
+
+sub revision {
+  my $self = shift;
+  my $ptr  = pkgcraft_version_revision($self->{_ptr});
+  my $str  = $ffi->cast('opaque' => 'string', $ptr);
+  pkgcraft_str_free($ptr);
+  return $str;
+}
+
+$ffi->attach(pkgcraft_version_free => ['version_t']);
+
+sub DESTROY {
+  my $self = shift;
+  if (not($self->{ref})) {
+    pkgcraft_version_free($self->{_ptr});
+  }
+}
