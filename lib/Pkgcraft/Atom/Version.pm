@@ -11,8 +11,7 @@ sub new {
   my $str   = shift;
   my $ptr   = pkgcraft_version_new($str);
   if (defined $ptr) {
-    my $self = bless {_ptr => $ptr, ref => 0}, $class;
-    return $self;
+    return bless {_ptr => $ptr, ref => 0}, $class;
   }
   else {
     die "invalid version: $str";

@@ -13,8 +13,7 @@ package Pkgcraft::Cpv {
     my $str   = shift;
     my $ptr   = pkgcraft_cpv_new($str);
     if (defined $ptr) {
-      my $self = bless {_ptr => $ptr, ref => 0}, $class;
-      return $self;
+      return bless {_ptr => $ptr, ref => 0}, $class;
     }
     else {
       die "invalid CPV: $str";
@@ -62,8 +61,7 @@ package Pkgcraft::Atom {
     my $str   = shift;
     my $ptr   = pkgcraft_atom_new($str);
     if (defined $ptr) {
-      my $self = bless {_ptr => $ptr, ref => 0}, $class;
-      return $self;
+      return bless {_ptr => $ptr, ref => 0}, $class;
     }
     else {
       die "invalid atom: $str";
