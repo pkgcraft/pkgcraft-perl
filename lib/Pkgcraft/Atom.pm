@@ -119,4 +119,11 @@ package Pkgcraft::Atom {
     my $self = shift;
     return _c_str_to_string(pkgcraft_atom_repo($self->{_ptr}));
   }
+
+  $ffi->attach(pkgcraft_atom_cpv => ['atom_t'] => 'c_str');
+
+  sub cpv {
+    my $self = shift;
+    return _c_str_to_string(pkgcraft_atom_cpv($self->{_ptr}));
+  }
 }

@@ -19,7 +19,8 @@ is($atom->version,  undef);
 is($atom->revision, undef);
 is($atom->slot,     undef);
 is($atom->subslot,  undef);
-is($atom->repo,  undef);
+is($atom->repo,     undef);
+ok($atom->cpv eq "cat/pkg");
 ok($atom->stringify eq "cat/pkg");
 ok(sprintf("%s", $atom) eq "cat/pkg");
 
