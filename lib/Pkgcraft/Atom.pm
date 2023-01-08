@@ -20,38 +20,29 @@ package Pkgcraft::Cpv {
     }
   }
 
-  $ffi->attach(pkgcraft_atom_category => ['atom_t'] => 'opaque');
+  $ffi->attach(pkgcraft_atom_category => ['atom_t'] => 'c_str');
 
   sub category {
     my $self = shift;
-    my $ptr  = pkgcraft_atom_category($self->{_ptr});
-    my $str  = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+    return _c_str_to_string(pkgcraft_atom_category($self->{_ptr}));
   }
 
-  $ffi->attach(pkgcraft_atom_package => ['atom_t'] => 'opaque');
+  $ffi->attach(pkgcraft_atom_package => ['atom_t'] => 'c_str');
 
   sub package {
     my $self = shift;
-    my $ptr  = pkgcraft_atom_package($self->{_ptr});
-    my $str  = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+    return _c_str_to_string(pkgcraft_atom_package($self->{_ptr}));
   }
 
   use overload
     fallback => 0,
     '""'     => 'stringify';
 
-  $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'opaque');
+  $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'c_str');
 
   sub stringify {
     my $self = shift;
-    my $ptr  = pkgcraft_atom_str($self->{_ptr});
-    my $str  = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+    return _c_str_to_string(pkgcraft_atom_str($self->{_ptr}));
   }
 
   $ffi->attach(pkgcraft_atom_free => ['atom_t']);
@@ -82,23 +73,17 @@ package Pkgcraft::Atom {
     }
   }
 
-  $ffi->attach(pkgcraft_atom_slot => ['atom_t'] => 'opaque');
+  $ffi->attach(pkgcraft_atom_slot => ['atom_t'] => 'c_str');
 
   sub slot {
     my $self = shift;
-    my $ptr  = pkgcraft_atom_slot($self->{_ptr});
-    my $str  = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+    return _c_str_to_string(pkgcraft_atom_slot($self->{_ptr}));
   }
 
-  $ffi->attach(pkgcraft_atom_subslot => ['atom_t'] => 'opaque');
+  $ffi->attach(pkgcraft_atom_subslot => ['atom_t'] => 'c_str');
 
   sub subslot {
     my $self = shift;
-    my $ptr  = pkgcraft_atom_subslot($self->{_ptr});
-    my $str  = $ffi->cast('opaque' => 'string', $ptr);
-    pkgcraft_str_free($ptr);
-    return $str;
+    return _c_str_to_string(pkgcraft_atom_subslot($self->{_ptr}));
   }
 }

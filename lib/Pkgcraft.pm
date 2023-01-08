@@ -12,7 +12,7 @@ our $VERSION = '0.01';
 
 use Exporter;
 our @ISA    = qw(Exporter);
-our @EXPORT = qw($ffi pkgcraft_str_free);
+our @EXPORT = qw($ffi c_str pkgcraft_str_free _c_str_to_string);
 
 our $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
@@ -33,4 +33,12 @@ $ffi->lib(find_lib_or_die(
   },
 ));
 
-$ffi->attach(pkgcraft_str_free => ['opaque']);
+$ffi->type('opaque' => 'c_str');
+$ffi->attach(pkgcraft_str_free => ['c_str']);
+
+sub _c_str_to_string {
+  my $ptr = shift;
+  my $str = $ffi->cast('c_str' => 'string', $ptr);
+  pkgcraft_str_free($ptr);
+  return $str;
+}
