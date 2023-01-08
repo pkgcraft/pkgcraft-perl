@@ -108,7 +108,7 @@ package Pkgcraft::Atom {
     return pkgcraft_atom_subslot($self->{_ptr});
   }
 
-  $ffi->attach(pkgcraft_atom_use_deps => ['atom_t', 'int*'] => 'opaque[]');
+  $ffi->attach(pkgcraft_atom_use_deps => ['atom_t', 'int*'] => 'opaque');
 
   sub use {
     my ($self, $length) = @_, 0;
