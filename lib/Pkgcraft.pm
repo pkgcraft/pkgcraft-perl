@@ -12,7 +12,7 @@ our $VERSION = '0.01';
 
 use Exporter;
 our @ISA    = qw(Exporter);
-our @EXPORT = qw($ffi);
+our @EXPORT = qw($ffi pkgcraft_str_free);
 
 our $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
@@ -32,3 +32,5 @@ $ffi->lib(find_lib_or_die(
     return ($ver >= $MINVERSION and $ver <= $MAXVERSION);
   },
 ));
+
+$ffi->attach(pkgcraft_str_free => ['opaque']);

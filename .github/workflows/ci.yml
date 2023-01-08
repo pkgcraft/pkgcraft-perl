@@ -60,22 +60,25 @@ jobs:
         perl-version: ${{ fromJson(needs.setup.outputs.perl-version) }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        repository: pkgcraft/pkgcraft-perl
-        submodules: true
+    - name: Set pkgcraft dir env var
+      run: echo pkgcraft_dir=~/pkgcraft >> $GITHUB_ENV
 
     - name: Download prebuilt pkgcraft-c library
       id: download-artifact
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{ secrets.PKGCRAFT_CI_TOKEN }}
-        repo: pkgcraft/pkgcraft-c
+        repo: pkgcraft/pkgcraft
         branch: main
-        workflow: ci.yml
+        workflow: pkgcraft-c.yml
         name: pkgcraft-c-${{ runner.os }}
-        path: pkgcraft
+        path: ${{ env.pkgcraft_dir }}
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        repository: pkgcraft/pkgcraft-perl
+        submodules: true
 
     - name: Set up Perl ${{ matrix.perl-version }}
       uses: shogo82148/actions-setup-perl@v1
@@ -92,11 +95,16 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
 
     - name: Install deps
+      run: cpanm -L local --installdeps .
+
+    - name: Override build variables
       run: |
-        perl Makefile.PL
-        cpanm -L local --installdeps .
+        echo "PKG_CONFIG_PATH=${pkgcraft_dir}" >> $GITHUB_ENV
+        echo "LD_LIBRARY_PATH=${pkgcraft_dir}/lib" >> $GITHUB_ENV
+        echo "DYLD_LIBRARY_PATH=${pkgcraft_dir}/lib" >> $GITHUB_ENV
 
     - name: Build and test module
       run: |
+        perl Makefile.PL
         make
         make test
