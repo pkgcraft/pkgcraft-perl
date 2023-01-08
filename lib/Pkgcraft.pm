@@ -12,7 +12,7 @@ our $VERSION = '0.01';
 
 use Exporter;
 our @ISA    = qw(Exporter);
-our @EXPORT = qw($ffi c_str pkgcraft_str_free _c_str_to_string);
+our @EXPORT = qw($ffi c_str string_array);
 
 our $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
@@ -45,3 +45,18 @@ $ffi->custom_type(
     }
   }
 );
+
+$ffi->attach(pkgcraft_str_array_free => ['opaque', 'int']);
+
+sub string_array {
+  my ($arr, $length) = @_;
+  if (defined $arr) {
+    my @a;
+    foreach my $elem (0 .. $length - 1) {
+      push @a, $ffi->cast('opaque' => 'string', $arr->[$elem]);
+    }
+    pkgcraft_str_array_free($arr);
+    return @a;
+  }
+  return;
+}

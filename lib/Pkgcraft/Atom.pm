@@ -108,6 +108,14 @@ package Pkgcraft::Atom {
     return pkgcraft_atom_subslot($self->{_ptr});
   }
 
+  $ffi->attach(pkgcraft_atom_use_deps => ['atom_t', 'int*'] => 'opaque[]');
+
+  sub use {
+    my ($self, $length) = @_, 0;
+    my $use = pkgcraft_atom_use_deps($self->{_ptr}, \$length);
+    return string_array($use, $length);
+  }
+
   $ffi->attach(pkgcraft_atom_repo => ['atom_t'] => 'c_str');
 
   sub repo {
