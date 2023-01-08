@@ -55,6 +55,8 @@ package Pkgcraft::Cpv {
     '!='     => sub { $_[0]->cmp($_[1]) != 0; },
     '>='     => sub { $_[0]->cmp($_[1]) >= 0; },
     '>'      => sub { $_[0]->cmp($_[1]) == 1; },
+    'eq'     => sub { $_[0]->stringify eq $_[1]; },
+    'ne'     => sub { $_[0]->stringify ne $_[1]; },
     '""'     => 'stringify';
 
   $ffi->attach(pkgcraft_atom_cmp => ['atom_t', 'atom_t'] => 'int');

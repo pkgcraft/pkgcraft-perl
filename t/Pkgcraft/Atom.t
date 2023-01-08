@@ -7,9 +7,9 @@ BEGIN { use_ok('Pkgcraft::Atom') }
 my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
 ok($cpv->category eq "cat");
 ok($cpv->package eq "pkg");
-ok($cpv->version->stringify eq "1");
+ok($cpv->version eq "1");
 ok($cpv->revision eq "0");
-ok($cpv->stringify eq "cat/pkg-1");
+ok($cpv eq "cat/pkg-1");
 ok(sprintf("%s", $cpv) eq "cat/pkg-1");
 
 my $atom = Pkgcraft::Atom->new("cat/pkg");
@@ -21,7 +21,7 @@ is($atom->slot,     undef);
 is($atom->subslot,  undef);
 is($atom->repo,     undef);
 ok($atom->cpv eq "cat/pkg");
-ok($atom->stringify eq "cat/pkg");
+ok($atom eq "cat/pkg");
 ok(sprintf("%s", $atom) eq "cat/pkg");
 
 done_testing();
