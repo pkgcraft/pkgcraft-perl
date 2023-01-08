@@ -7,9 +7,8 @@ $ffi->type('opaque' => 'version_t');
 $ffi->attach(pkgcraft_version_new => ['string'] => 'version_t');
 
 sub new {
-  my $class = shift;
-  my $str   = shift;
-  my $ptr   = pkgcraft_version_new($str);
+  my ($class, $str) = @_;
+  my $ptr = pkgcraft_version_new($str);
   if (defined $ptr) {
     return bless {_ptr => $ptr, ref => 0}, $class;
   }
@@ -17,8 +16,7 @@ sub new {
 }
 
 sub _from_ptr {
-  my $class = shift;
-  my $ptr   = shift;
+  my ($class, $ptr) = @_;
   if (defined $ptr) {
     return bless {_ptr => $ptr, ref => 1}, $class;
   }
@@ -28,7 +26,7 @@ sub _from_ptr {
 $ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
 
 sub revision {
-  my $self = shift;
+  my ($self) = @_;
   return pkgcraft_version_revision($self->{_ptr});
 }
 
@@ -45,22 +43,21 @@ use overload
 $ffi->attach(pkgcraft_version_cmp => ['version_t', 'version_t'] => 'int');
 
 sub cmp {
-  my $self  = shift;
-  my $other = shift;
+  my ($self, $other) = @_;
   return pkgcraft_version_cmp($self->{_ptr}, $other->{_ptr});
 }
 
 $ffi->attach(pkgcraft_version_str => ['version_t'] => 'c_str');
 
 sub stringify {
-  my $self = shift;
+  my ($self) = @_;
   return pkgcraft_version_str($self->{_ptr});
 }
 
 $ffi->attach(pkgcraft_version_free => ['version_t']);
 
 sub DESTROY {
-  my $self = shift;
+  my ($self) = @_;
   if (not($self->{ref})) {
     pkgcraft_version_free($self->{_ptr});
   }

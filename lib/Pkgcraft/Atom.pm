@@ -10,9 +10,8 @@ package Pkgcraft::Cpv {
   $ffi->attach(pkgcraft_cpv_new => ['string'] => 'atom_t');
 
   sub new {
-    my $class = shift;
-    my $str   = shift;
-    my $ptr   = pkgcraft_cpv_new($str);
+    my ($class, $str) = @_;
+    my $ptr = pkgcraft_cpv_new($str);
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
@@ -22,29 +21,29 @@ package Pkgcraft::Cpv {
   $ffi->attach(pkgcraft_atom_category => ['atom_t'] => 'c_str');
 
   sub category {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_category($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_package => ['atom_t'] => 'c_str');
 
   sub package {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_package($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_version => ['atom_t'] => 'version_t');
 
   sub version {
-    my $self = shift;
-    my $ptr  = pkgcraft_atom_version($self->{_ptr});
+    my ($self) = @_;
+    my $ptr = pkgcraft_atom_version($self->{_ptr});
     return Pkgcraft::Atom::Version->_from_ptr($ptr);
   }
 
   $ffi->attach(pkgcraft_atom_revision => ['atom_t'] => 'c_str');
 
   sub revision {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_revision($self->{_ptr});
   }
 
@@ -61,22 +60,21 @@ package Pkgcraft::Cpv {
   $ffi->attach(pkgcraft_atom_cmp => ['atom_t', 'atom_t'] => 'int');
 
   sub cmp {
-    my $self  = shift;
-    my $other = shift;
+    my ($self, $other) = @_;
     return pkgcraft_atom_cmp($self->{_ptr}, $other->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'c_str');
 
   sub stringify {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_str($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_free => ['atom_t']);
 
   sub DESTROY {
-    my $self = shift;
+    my ($self) = @_;
     if (not($self->{ref})) {
       pkgcraft_atom_free($self->{_ptr});
     }
@@ -90,9 +88,8 @@ package Pkgcraft::Atom {
   $ffi->attach(pkgcraft_atom_new => ['string', 'Eapi'] => 'atom_t');
 
   sub new {
-    my $class = shift;
-    my $str   = shift;
-    my $ptr   = pkgcraft_atom_new($str);
+    my ($class, $str) = @_;
+    my $ptr = pkgcraft_atom_new($str);
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
@@ -102,28 +99,28 @@ package Pkgcraft::Atom {
   $ffi->attach(pkgcraft_atom_slot => ['atom_t'] => 'c_str');
 
   sub slot {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_slot($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_subslot => ['atom_t'] => 'c_str');
 
   sub subslot {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_subslot($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_repo => ['atom_t'] => 'c_str');
 
   sub repo {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_repo($self->{_ptr});
   }
 
   $ffi->attach(pkgcraft_atom_cpv => ['atom_t'] => 'c_str');
 
   sub cpv {
-    my $self = shift;
+    my ($self) = @_;
     return pkgcraft_atom_cpv($self->{_ptr});
   }
 }
