@@ -20,6 +20,17 @@ sub new {
 
 $ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
 
+sub _from_ptr {
+  my $class = shift;
+  my $ptr   = shift;
+  if (defined $ptr) {
+    return bless {_ptr => $ptr, ref => 1}, $class;
+  }
+  else {
+    return;
+  }
+}
+
 sub revision {
   my $self = shift;
   return _c_str_to_string(pkgcraft_version_revision($self->{_ptr}));

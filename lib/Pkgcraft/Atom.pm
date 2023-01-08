@@ -5,6 +5,7 @@ $ffi->type('opaque' => 'atom_t');
 
 package Pkgcraft::Cpv {
   use Pkgcraft;
+  use Pkgcraft::Atom::Version;
 
   $ffi->attach(pkgcraft_cpv_new => ['string'] => 'atom_t');
 
@@ -32,6 +33,14 @@ package Pkgcraft::Cpv {
   sub package {
     my $self = shift;
     return _c_str_to_string(pkgcraft_atom_package($self->{_ptr}));
+  }
+
+  $ffi->attach(pkgcraft_atom_version => ['atom_t'] => 'version_t');
+
+  sub version {
+    my $self = shift;
+    my $ptr  = pkgcraft_atom_version($self->{_ptr});
+    return Pkgcraft::Atom::Version->_from_ptr($ptr);
   }
 
   use overload
