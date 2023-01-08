@@ -13,7 +13,7 @@ package Pkgcraft::Cpv {
     my $str   = shift;
     my $ptr   = pkgcraft_cpv_new($str);
     if (defined $ptr) {
-      my $self = bless {_ptr => $ptr}, $class;
+      my $self = bless {_ptr => $ptr, ref => 0}, $class;
       return $self;
     }
     else {
@@ -45,7 +45,9 @@ package Pkgcraft::Cpv {
 
   sub DESTROY {
     my $self = shift;
-    pkgcraft_atom_free($self->{_ptr});
+    if (not($self->{ref})) {
+      pkgcraft_atom_free($self->{_ptr});
+    }
   }
 }
 
@@ -60,7 +62,7 @@ package Pkgcraft::Atom {
     my $str   = shift;
     my $ptr   = pkgcraft_atom_new($str);
     if (defined $ptr) {
-      my $self = bless {_ptr => $ptr}, $class;
+      my $self = bless {_ptr => $ptr, ref => 0}, $class;
       return $self;
     }
     else {
