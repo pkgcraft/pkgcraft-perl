@@ -40,6 +40,20 @@ package Pkgcraft::Cpv {
     return $str;
   }
 
+  use overload
+    fallback => 0,
+    '""'     => 'stringify';
+
+  $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'opaque');
+
+  sub stringify {
+    my $self = shift;
+    my $ptr  = pkgcraft_atom_str($self->{_ptr});
+    my $str  = $ffi->cast('opaque' => 'string', $ptr);
+    pkgcraft_str_free($ptr);
+    return $str;
+  }
+
   $ffi->attach(pkgcraft_atom_free => ['atom_t']);
 
   sub DESTROY {
