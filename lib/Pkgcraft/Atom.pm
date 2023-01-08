@@ -43,7 +43,21 @@ package Pkgcraft::Cpv {
 
   use overload
     fallback => 0,
+    '<'      => sub { $_[0]->cmp($_[1]) == -1; },
+    '<='     => sub { $_[0]->cmp($_[1]) <= 0; },
+    '=='     => sub { $_[0]->cmp($_[1]) == 0; },
+    '!='     => sub { $_[0]->cmp($_[1]) != 0; },
+    '>='     => sub { $_[0]->cmp($_[1]) >= 0; },
+    '>'      => sub { $_[0]->cmp($_[1]) == 1; },
     '""'     => 'stringify';
+
+  $ffi->attach(pkgcraft_atom_cmp => ['atom_t', 'atom_t'] => 'int');
+
+  sub cmp {
+    my $self  = shift;
+    my $other = shift;
+    return pkgcraft_atom_cmp($self->{_ptr}, $other->{_ptr});
+  }
 
   $ffi->attach(pkgcraft_atom_str => ['atom_t'] => 'c_str');
 

@@ -34,7 +34,21 @@ sub revision {
 
 use overload
   fallback => 0,
+  '<'      => sub { $_[0]->cmp($_[1]) == -1; },
+  '<='     => sub { $_[0]->cmp($_[1]) <= 0; },
+  '=='     => sub { $_[0]->cmp($_[1]) == 0; },
+  '!='     => sub { $_[0]->cmp($_[1]) != 0; },
+  '>='     => sub { $_[0]->cmp($_[1]) >= 0; },
+  '>'      => sub { $_[0]->cmp($_[1]) == 1; },
   '""'     => 'stringify';
+
+$ffi->attach(pkgcraft_version_cmp => ['version_t', 'version_t'] => 'int');
+
+sub cmp {
+  my $self  = shift;
+  my $other = shift;
+  return pkgcraft_version_cmp($self->{_ptr}, $other->{_ptr});
+}
 
 $ffi->attach(pkgcraft_version_str => ['version_t'] => 'c_str');
 
