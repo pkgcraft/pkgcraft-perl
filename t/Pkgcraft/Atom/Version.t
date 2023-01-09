@@ -34,4 +34,13 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   }
 }
 
+# version comparisons
+foreach my $arrays (@{$VERSION_DATA->{"sorting"}}) {
+  my ($unsorted, $expected) = @{$arrays};
+  my @sorted
+    = sort { Pkgcraft::Atom::Version->new($a) <=> Pkgcraft::Atom::Version->new($b) }
+    @{$unsorted};
+  is(\@sorted, $expected);
+}
+
 done_testing;
