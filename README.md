@@ -16,7 +16,7 @@ make test
 make install
 ```
 
-## Dependencies
+## Runtime dependencies
 
 - [pkgcraft-c](https://github.com/pkgcraft/pkgcraft/tree/main/crates/pkgcraft-c)
 - FFI::CheckLib
