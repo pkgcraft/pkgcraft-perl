@@ -18,6 +18,14 @@ package Pkgcraft::Cpv {
     die "invalid CPV: $str";
   }
 
+  sub _from_ptr {
+    my ($class, $ptr) = @_;
+    if (defined $ptr) {
+      return bless {_ptr => $ptr, ref => 1}, $class;
+    }
+    return;
+  }
+
   $ffi->attach('pkgcraft_atom_category' => ['atom_t'] => 'c_str');
 
   sub category {
