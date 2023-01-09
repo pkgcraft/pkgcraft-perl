@@ -47,6 +47,13 @@ package Pkgcraft::Cpv {
     return pkgcraft_atom_revision($self->{_ptr});
   }
 
+  $ffi->attach('pkgcraft_atom_cpn' => ['atom_t'] => 'c_str');
+
+  sub cpn {
+    my ($self) = @_;
+    return pkgcraft_atom_cpn($self->{_ptr});
+  }
+
   $ffi->attach('pkgcraft_atom_cmp' => ['atom_t', 'atom_t'] => 'int');
 
   use overload
