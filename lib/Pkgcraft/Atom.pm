@@ -67,7 +67,7 @@ package Pkgcraft::Cpv {
   use overload
     fallback => 1,
     '<=>'    => sub {
-      if ($_[0]->isa("Pkgcraft::Atom") && $_[1]->isa("Pkgcraft::Atom")) {
+      if ($_[0]->isa("Pkgcraft::Cpv") && $_[1]->isa("Pkgcraft::Cpv")) {
         return pkgcraft_atom_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
       }
       die "Invalid types for comparison!";
