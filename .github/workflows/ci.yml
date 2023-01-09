@@ -60,7 +60,7 @@ jobs:
         perl-version: ${{ fromJson(needs.setup.outputs.perl-version) }}
 
     steps:
-    - name: Set pkgcraft dir env var
+    - name: Set up environment
       run: echo pkgcraft_dir=~/pkgcraft >> $GITHUB_ENV
 
     - name: Download prebuilt pkgcraft-c library
@@ -85,13 +85,21 @@ jobs:
       id: perl
       with:
         perl-version: ${{ matrix.perl-version }}
-        install-modules-with: cpanm
-        install-modules-args: -n
-        install-modules: Devel::Cover
-        working-directory: ..
+        enable-modules-cache: false
 
-    - name: Install deps
-      run: cpanm -L ../local --installdeps .
+    - name: Set up cache
+      uses: actions/cache@v3
+      with:
+        path: local
+        key: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-
+
+    - name: Install modules
+      run: |
+        cpanm -L local -n --installdeps .
+        cpanm -L local -n Devel::Cover
+        # required for `cover` command to be found
+        echo local/bin >> $GITHUB_PATH
 
     - name: Override build variables
       run: |
@@ -101,11 +109,11 @@ jobs:
 
     - name: Build and test module
       env:
-        PERL5LIB: 'perllib:../local/lib/perl5'
+        PERL5LIB: 'perllib:local/lib/perl5'
       run: |
         perl Makefile.PL
         make
-        cover -test -report codecov
+        cover -test -ignore_re "local" -report codecov
 
     - name: Upload coverage to Codecov
       if: ${{ inputs.perl-version == '' }}
