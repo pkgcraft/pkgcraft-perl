@@ -65,17 +65,15 @@ package Pkgcraft::Cpv {
   $ffi->attach('pkgcraft_atom_cmp' => ['atom_t', 'atom_t'] => 'int');
 
   use overload
-    fallback => 0,
-    '<=>'    => sub { pkgcraft_atom_cmp($_[0], $_[1]); },
-    '<'      => sub { pkgcraft_atom_cmp($_[0], $_[1]) == -1; },
-    '<='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) <= 0; },
-    '=='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) == 0; },
-    '!='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) != 0; },
-    '>='     => sub { pkgcraft_atom_cmp($_[0], $_[1]) >= 0; },
-    '>'      => sub { pkgcraft_atom_cmp($_[0], $_[1]) == 1; },
-    'eq'     => sub { $_[0]->stringify eq $_[1]; },
-    'ne'     => sub { $_[0]->stringify ne $_[1]; },
-    '""'     => 'stringify';
+    fallback => 1,
+    '<=>'    => sub {
+      if ($_[0]->isa("Pkgcraft::Atom") && $_[1]->isa("Pkgcraft::Atom")) {
+        return pkgcraft_atom_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+      }
+      die "Invalid types for comparison!";
+    },
+    'cmp' => sub { "$_[0]" cmp "$_[1]"; },
+    '""'  => 'stringify';
 
   $ffi->attach('pkgcraft_atom_str' => ['atom_t'] => 'c_str');
 

@@ -33,17 +33,15 @@ sub revision {
 $ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');
 
 use overload
-  fallback => 0,
-  '<=>'    => sub { pkgcraft_version_cmp($_[0], $_[1]); },
-  '<'      => sub { pkgcraft_version_cmp($_[0], $_[1]) == -1; },
-  '<='     => sub { pkgcraft_version_cmp($_[0], $_[1]) <= 0; },
-  '=='     => sub { pkgcraft_version_cmp($_[0], $_[1]) == 0; },
-  '!='     => sub { pkgcraft_version_cmp($_[0], $_[1]) != 0; },
-  '>='     => sub { pkgcraft_version_cmp($_[0], $_[1]) >= 0; },
-  '>'      => sub { pkgcraft_version_cmp($_[0], $_[1]) == 1; },
-  'eq'     => sub { $_[0]->stringify eq $_[1]; },
-  'ne'     => sub { $_[0]->stringify ne $_[1]; },
-  '""'     => 'stringify';
+  fallback => 1,
+  '<=>'    => sub {
+    if ($_[0]->isa("Pkgcraft::Atom::Version") && $_[1]->isa("Pkgcraft::Atom::Version")) {
+      return pkgcraft_verison_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+    }
+    die "Invalid types for comparison!";
+  },
+  'cmp' => sub { "$_[0]" cmp "$_[1]"; },
+  '""'  => 'stringify';
 
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
 
