@@ -1,8 +1,6 @@
-use strict;
-use warnings;
+use Test2::V0;
 
-use Test::More;
-BEGIN { use_ok('Pkgcraft::Atom') }
+use Pkgcraft::Atom;
 
 my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
 ok($cpv->category eq "cat");
@@ -26,6 +24,6 @@ ok($atom eq "cat/pkg");
 ok(sprintf("%s", $atom) eq "cat/pkg");
 
 $atom = Pkgcraft::Atom->new("cat/pkg[u1,u2]");
-is_deeply($atom->use, ["u1", "u2"]);
+is($atom->use, ["u1", "u2"]);
 
-done_testing();
+done_testing;
