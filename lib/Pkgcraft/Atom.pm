@@ -90,6 +90,9 @@ package Pkgcraft::Atom {
   use Pkgcraft;
   our @ISA = qw(Pkgcraft::Cpv);
 
+  use constant {BLOCKER_STRONG      => 0, BLOCKER_WEAK       => 1};
+  use constant {SLOT_OPERATOR_EQUAL => 0, SLOT_OPERATOR_STAR => 1};
+
   $ffi->attach('pkgcraft_atom_new' => ['string', 'Eapi'] => 'atom_t');
 
   sub new {
@@ -99,6 +102,17 @@ package Pkgcraft::Atom {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
     die "invalid atom: $str";
+  }
+
+  $ffi->attach('pkgcraft_atom_blocker' => ['atom_t'] => 'int');
+
+  sub blocker {
+    my ($self) = @_;
+    my $blocker = pkgcraft_atom_blocker($self->{_ptr});
+    if ($blocker >= 0) {
+      return $blocker;
+    }
+    return;
   }
 
   $ffi->attach('pkgcraft_atom_slot' => ['atom_t'] => 'c_str');
@@ -113,6 +127,17 @@ package Pkgcraft::Atom {
   sub subslot {
     my ($self) = @_;
     return pkgcraft_atom_subslot($self->{_ptr});
+  }
+
+  $ffi->attach('pkgcraft_atom_slot_op' => ['atom_t'] => 'int');
+
+  sub slot_op {
+    my ($self) = @_;
+    my $slot_op = pkgcraft_atom_slot_op($self->{_ptr});
+    if ($slot_op >= 0) {
+      return $slot_op;
+    }
+    return;
   }
 
   $ffi->attach('pkgcraft_atom_use_deps' => ['atom_t', 'int*'] => 'opaque');
