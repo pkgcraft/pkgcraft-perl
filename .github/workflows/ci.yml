@@ -100,15 +100,12 @@ jobs:
         echo "DYLD_LIBRARY_PATH=${pkgcraft_dir}/lib" >> $GITHUB_ENV
 
     - name: Build and test module
+      env:
+        PERL5LIB: 'perllib:../local/lib/perl5'
       run: |
         perl Makefile.PL
         make
-        PERL5OPT=-MDevel::Cover make test
-
-    - name: Create coverage report
-      run: cover -report codecov
-      env:
-        PERL5LIB: 'perllib:../local/lib/perl5'
+        cover -test -report codecov
 
     - name: Upload coverage to Codecov
       if: ${{ inputs.perl-version == '' }}
