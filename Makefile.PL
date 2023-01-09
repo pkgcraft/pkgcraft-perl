@@ -11,6 +11,7 @@ WriteMakefile(
     },
     TEST_REQUIRES => {
         'Test2::V0' => '0.000145',
+        'TOML::Tiny' => '0.15',
     },
     MIN_PERL_VERSION  => '5.30.0',
     ABSTRACT_FROM     => 'lib/Pkgcraft.pod',

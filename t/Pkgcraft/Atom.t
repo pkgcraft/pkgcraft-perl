@@ -1,6 +1,15 @@
 use Test2::V0;
+use TOML::Tiny qw(from_toml);
 
 use Pkgcraft::Atom;
+
+# load atom test data
+open my $fh, '<', 'testdata/toml/atom.toml' or die "Can't open file: $!";
+my $toml = do { local $/; <$fh> };
+my ($ATOM_DATA, $err) = from_toml($toml);
+unless ($ATOM_DATA) {
+  die "Error parsing toml: $err";
+}
 
 my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
 ok($cpv->category eq "cat");
@@ -34,5 +43,14 @@ is($atom->use,     ["u1", "u2"]);
 $atom = Pkgcraft::Atom->new("cat/pkg:1=");
 ok($atom->slot eq "1");
 is($atom->slot_op, Pkgcraft::Atom->SLOT_OPERATOR_EQUAL);
+
+# invalid atoms
+foreach my $str (@{$ATOM_DATA->{"invalid"}}) {
+  like(
+    dies { Pkgcraft::Atom->new($str) },
+    qr/invalid atom: \Q$str\E/,
+    "invalid atom: $str"
+  );
+}
 
 done_testing;
