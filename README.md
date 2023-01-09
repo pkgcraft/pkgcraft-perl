@@ -9,13 +9,15 @@ Perl bindings for pkgcraft.
 
 To install this module use the following commands:
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+```
+perl Makefile.PL
+make
+make test
+make install
+```
 
 ## Dependencies
 
-  [pkgcraft-c](https://github.com/pkgcraft/pkgcraft/tree/main/crates/pkgcraft-c)
-  FFI::CheckLib
-  FFI::Platypus
+- [pkgcraft-c](https://github.com/pkgcraft/pkgcraft/tree/main/crates/pkgcraft-c)
+- FFI::CheckLib
+- FFI::Platypus
