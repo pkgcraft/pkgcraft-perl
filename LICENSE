@@ -1,22 +1,3 @@
-Pkgcraft version 0.01
-=====================
-
-INSTALLATION
-
-To install this module type the following:
-
-   perl Makefile.PL
-   make
-   make test
-   make install
-
-DEPENDENCIES
-
-  FFI::CheckLib
-  FFI::Platypus
-
-COPYRIGHT AND LICENCE
-
 Copyright (C) 2022 by Tim Harder
 
 This library is free software; you can redistribute it and/or modify
