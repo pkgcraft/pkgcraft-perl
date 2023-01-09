@@ -36,7 +36,7 @@ use overload
   fallback => 1,
   '<=>'    => sub {
     if ($_[0]->isa("Pkgcraft::Atom::Version") && $_[1]->isa("Pkgcraft::Atom::Version")) {
-      return pkgcraft_verison_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+      return pkgcraft_version_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
     }
     die "Invalid types for comparison!";
   },
