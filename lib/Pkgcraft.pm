@@ -49,11 +49,15 @@ $ffi->custom_type(
 $ffi->attach(pkgcraft_str_array_free => ['opaque', 'int']);
 
 sub string_array {
-  my ($arr, $length) = @_;
-  if (defined $arr) {
-    my $strs = $ffi->cast('opaque' => 'string[]', $arr);
-    pkgcraft_str_array_free($arr, $length);
-    return $strs;
+  my ($ptr, $length) = @_;
+  if (defined $ptr) {
+    my $arr = $ffi->cast('opaque' => 'opaque[]', $ptr);
+    my @a;
+    foreach my $elem (0 .. $length - 1) {
+      push @a, $ffi->cast('opaque' => 'string', $arr->[$elem]);
+    }
+    pkgcraft_str_array_free($ptr, $length);
+    return \@a;
   }
   return;
 }
