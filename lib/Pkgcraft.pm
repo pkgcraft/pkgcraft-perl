@@ -33,8 +33,8 @@ $ffi->lib(find_lib_or_die(
   },
 ));
 
-$ffi->attach_cast("cast_string", 'opaque', 'string');
-$ffi->attach(pkgcraft_str_free => ['opaque']);
+$ffi->attach_cast('cast_string', 'opaque', 'string');
+$ffi->attach('pkgcraft_str_free' => ['opaque']);
 
 $ffi->custom_type(
   'c_str' => {
@@ -48,8 +48,8 @@ $ffi->custom_type(
   }
 );
 
-$ffi->attach_cast("cast_array", 'opaque', 'opaque[]');
-$ffi->attach(pkgcraft_str_array_free => ['opaque', 'int']);
+$ffi->attach_cast('cast_array', 'opaque', 'opaque[]');
+$ffi->attach('pkgcraft_str_array_free' => ['opaque', 'int']);
 
 sub string_array {
   my ($ptr, $length) = @_;

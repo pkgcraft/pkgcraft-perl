@@ -4,7 +4,7 @@ use Pkgcraft;
 
 $ffi->type('opaque' => 'version_t');
 
-$ffi->attach(pkgcraft_version_new => ['string'] => 'version_t');
+$ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
 
 sub new {
   my ($class, $str) = @_;
@@ -23,14 +23,14 @@ sub _from_ptr {
   return;
 }
 
-$ffi->attach(pkgcraft_version_revision => ['version_t'] => 'c_str');
+$ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'c_str');
 
 sub revision {
   my ($self) = @_;
   return pkgcraft_version_revision($self->{_ptr});
 }
 
-$ffi->attach(pkgcraft_version_cmp => ['version_t', 'version_t'] => 'int');
+$ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');
 
 use overload
   fallback => 0,
@@ -45,14 +45,14 @@ use overload
   'ne'     => sub { $_[0]->stringify ne $_[1]; },
   '""'     => 'stringify';
 
-$ffi->attach(pkgcraft_version_str => ['version_t'] => 'c_str');
+$ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
 
 sub stringify {
   my ($self) = @_;
   return pkgcraft_version_str($self->{_ptr});
 }
 
-$ffi->attach(pkgcraft_version_free => ['version_t']);
+$ffi->attach('pkgcraft_version_free' => ['version_t']);
 
 sub DESTROY {
   my ($self) = @_;
