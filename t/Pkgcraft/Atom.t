@@ -53,4 +53,13 @@ foreach my $str (@{$ATOM_DATA->{"invalid"}}) {
   );
 }
 
+# equivalent atoms with unequal strings
+foreach my $str (@{$ATOM_DATA->{"compares"}}) {
+  my ($s1, $op, $s2) = split ' ', $str;
+  my $a1 = Pkgcraft::Atom->new($s1);
+  my $a2 = Pkgcraft::Atom->new($s2);
+  ok($a1 == $a2);
+  ok($a1 ne $a2);
+}
+
 done_testing;
