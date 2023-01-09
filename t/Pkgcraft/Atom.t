@@ -3,7 +3,7 @@ use TOML::Tiny qw(from_toml);
 
 use Pkgcraft::Atom;
 
-# load atom test data
+# load test data
 open my $fh, '<', 'testdata/toml/atom.toml' or die "Can't open file: $!";
 my $toml = do { local $/; <$fh> };
 my ($ATOM_DATA, $err) = from_toml($toml);
