@@ -34,7 +34,7 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   }
 }
 
-# version comparisons
+# version sorting
 foreach my $arrays (@{$VERSION_DATA->{"sorting"}}) {
   my ($unsorted, $expected) = @{$arrays};
   my @sorted

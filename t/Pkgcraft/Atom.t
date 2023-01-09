@@ -62,4 +62,11 @@ foreach my $str (@{$ATOM_DATA->{"compares"}}) {
   ok($a1 ne $a2);
 }
 
+# atom sorting
+foreach my $arrays (@{$ATOM_DATA->{"sorting"}}) {
+  my ($unsorted, $expected) = @{$arrays};
+  my @sorted = sort { Pkgcraft::Atom->new($a) <=> Pkgcraft::Atom->new($b) } @{$unsorted};
+  is(\@sorted, $expected);
+}
+
 done_testing;
