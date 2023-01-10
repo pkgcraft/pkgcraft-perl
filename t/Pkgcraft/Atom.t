@@ -55,8 +55,13 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
   my $eapis = Pkgcraft::Eapi->range($data{eapis});
   foreach my $eapi (@$eapis) {
     my $atom = Pkgcraft::Atom->new($data{atom}, $eapi);
-    is($atom->category, $data{category});
-    is($atom->package, $data{package});
+    ok($atom->category eq $data{category});
+    ok($atom->package eq $data{package});
+    if (defined $data{version}) {
+      ok($atom->version == Pkgcraft::Atom::VersionWithOp->new($data{version}));
+    } else {
+      is($atom->version, $data{version});
+    }
     is($atom->revision, $data{revision});
     is($atom->slot, $data{slot});
     is($atom->subslot, $data{subslot});
