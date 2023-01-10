@@ -38,10 +38,10 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
 
 # version sorting
 foreach my $arrays (@{$VERSION_DATA->{"sorting"}}) {
-  my ($unsorted, $expected) = @{$arrays};
+  my ($unsorted, $expected) = @$arrays;
   my @sorted
     = sort { Pkgcraft::Atom::Version->new($a) <=> Pkgcraft::Atom::Version->new($b) }
-    @{$unsorted};
+    @$unsorted;
   is(\@sorted, $expected);
 }
 

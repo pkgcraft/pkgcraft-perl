@@ -45,7 +45,7 @@ sub _get_official_eapis {
 }
 
 our $EAPIS_OFFICIAL = _get_official_eapis();
-our $EAPI_LATEST = %{$EAPIS_OFFICIAL}{(keys %{$EAPIS_OFFICIAL}) - 1};
+our $EAPI_LATEST = %$EAPIS_OFFICIAL{(keys %$EAPIS_OFFICIAL) - 1};
 
 $ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
 

@@ -51,9 +51,9 @@ is($atom->slot_op, Pkgcraft::Atom->SLOT_OPERATOR_EQUAL);
 # TODO: add checks for missing attributes
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
-  my %data = %{$hash};
+  my %data = %$hash;
   my $eapis = Pkgcraft::Eapi->range($data{eapis});
-  foreach my $eapi (@{$eapis}) {
+  foreach my $eapi (@$eapis) {
     my $atom = Pkgcraft::Atom->new($data{atom}, $eapi);
     is($atom->category, $data{category});
     is($atom->package, $data{package});
@@ -85,8 +85,8 @@ foreach my $str (@{$ATOM_DATA->{"compares"}}) {
 
 # atom sorting
 foreach my $arrays (@{$ATOM_DATA->{"sorting"}}) {
-  my ($unsorted, $expected) = @{$arrays};
-  my @sorted = sort { Pkgcraft::Atom->new($a) <=> Pkgcraft::Atom->new($b) } @{$unsorted};
+  my ($unsorted, $expected) = @$arrays;
+  my @sorted = sort { Pkgcraft::Atom->new($a) <=> Pkgcraft::Atom->new($b) } @$unsorted;
   is(\@sorted, $expected);
 }
 
