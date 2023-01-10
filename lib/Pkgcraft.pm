@@ -12,7 +12,7 @@ our $VERSION = '0.01';
 
 use Exporter;
 our @ISA    = qw(Exporter);
-our @EXPORT = qw($ffi c_str string_array);
+our @EXPORT = qw($ffi cast_array c_str string_array);
 
 our $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
