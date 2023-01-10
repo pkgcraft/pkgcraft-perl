@@ -109,7 +109,7 @@ package Pkgcraft::Atom {
     my ($class, $str, $eapi) = @_;
 
     my $eapi_ptr = undef;
-    if (defined($eapi)) {
+    if (defined $eapi) {
       if ($eapi->isa("Pkgcraft::Eapi")) {
         $eapi_ptr = $eapi->{_ptr};
       } else {
