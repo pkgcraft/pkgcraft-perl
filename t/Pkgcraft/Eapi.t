@@ -17,4 +17,7 @@ foreach my $k (keys %{$EAPIS_OFFICIAL}) {
 # verify $EAPI_LATEST reference
 is($EAPIS->{$EAPI_LATEST}, $EAPI_LATEST);
 
+is(Pkgcraft::Eapi->range("..2"), [$EAPIS->{0}, $EAPIS->{1}]);
+is(Pkgcraft::Eapi->range("3..4"), [$EAPIS->{3}]);
+
 done_testing;
