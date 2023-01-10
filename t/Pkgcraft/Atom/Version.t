@@ -2,7 +2,9 @@ use Test2::V0;
 use TOML::Tiny qw(from_toml);
 
 use v5.30;
-no warnings "experimental";
+use strict;
+use warnings;
+no warnings qw(experimental);
 
 use Pkgcraft::Atom::Version;
 

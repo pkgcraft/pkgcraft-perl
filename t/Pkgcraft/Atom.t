@@ -1,6 +1,10 @@
 use Test2::V0;
 use TOML::Tiny qw(from_toml);
 
+use v5.30;
+use strict;
+use warnings;
+
 use Pkgcraft::Atom;
 
 # load test data

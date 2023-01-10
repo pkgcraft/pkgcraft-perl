@@ -1,3 +1,7 @@
+use v5.30;
+use strict;
+use warnings;
+
 use Pkgcraft;
 use Pkgcraft::Eapi;
 
