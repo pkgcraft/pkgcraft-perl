@@ -48,7 +48,9 @@ $atom = Pkgcraft::Atom->new("cat/pkg:1=");
 ok($atom->slot eq "1");
 is($atom->slot_op, Pkgcraft::Atom->SLOT_OPERATOR_EQUAL);
 
-# TODO: add checks for missing attributes
+$ffi->attach('pkgcraft_atom_blocker_from_str' => ['string'] => 'int');
+$ffi->attach('pkgcraft_atom_slot_op_from_str' => ['string'] => 'int');
+
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
   my %data = %$hash;
@@ -57,6 +59,11 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
     my $atom = Pkgcraft::Atom->new($data{atom}, $eapi);
     ok($atom->category eq $data{category});
     ok($atom->package eq $data{package});
+    if (defined $data{blocker}) {
+      is($atom->blocker, pkgcraft_atom_blocker_from_str($data{blocker}));
+    } else {
+      is($atom->blocker, $data{blocker});
+    }
     if (defined $data{version}) {
       ok($atom->version == Pkgcraft::Atom::VersionWithOp->new($data{version}));
     } else {
@@ -65,6 +72,11 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
     is($atom->revision, $data{revision});
     is($atom->slot, $data{slot});
     is($atom->subslot, $data{subslot});
+    if (defined $data{slot_op}) {
+      is($atom->slot_op, pkgcraft_atom_slot_op_from_str($data{slot_op}));
+    } else {
+      is($atom->slot_op, $data{slot_op});
+    }
     is($atom->use, $data{use});
     ok("$atom" eq $data{atom});
   }
