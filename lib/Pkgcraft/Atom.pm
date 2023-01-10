@@ -3,7 +3,6 @@ use strict;
 use warnings;
 
 use Pkgcraft;
-use Pkgcraft::Eapi;
 
 $ffi->type('opaque' => 'atom_t');
 
@@ -98,16 +97,27 @@ package Pkgcraft::Cpv {
 
 package Pkgcraft::Atom {
   use Pkgcraft;
+  use Pkgcraft::Eapi;
   our @ISA = qw(Pkgcraft::Cpv);
 
   use constant {BLOCKER_STRONG      => 0, BLOCKER_WEAK       => 1};
   use constant {SLOT_OPERATOR_EQUAL => 0, SLOT_OPERATOR_STAR => 1};
 
-  $ffi->attach('pkgcraft_atom_new' => ['string', 'Eapi'] => 'atom_t');
+  $ffi->attach('pkgcraft_atom_new' => ['string', 'eapi_t'] => 'atom_t');
 
   sub new {
-    my ($class, $str) = @_;
-    my $ptr = pkgcraft_atom_new($str);
+    my ($class, $str, $eapi) = @_;
+
+    my $eapi_ptr = undef;
+    if (defined($eapi)) {
+      if ($eapi->isa("Pkgcraft::Eapi")) {
+        $eapi_ptr = $eapi->{_ptr};
+      } else {
+        $eapi_ptr = $EAPIS->{$eapi}->{_ptr} or die "unknown EAPI: $eapi";
+      }
+    }
+
+    my $ptr = pkgcraft_atom_new($str, $eapi_ptr);
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
