@@ -48,6 +48,23 @@ $atom = Pkgcraft::Atom->new("cat/pkg:1=");
 ok($atom->slot eq "1");
 is($atom->slot_op, Pkgcraft::Atom->SLOT_OPERATOR_EQUAL);
 
+# TODO: add checks for missing attributes
+# valid atoms
+foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
+  my %data = %{$hash};
+  my $eapis = Pkgcraft::Eapi->range($data{eapis});
+  foreach my $eapi (@{$eapis}) {
+    my $atom = Pkgcraft::Atom->new($data{atom}, $eapi);
+    is($atom->category, $data{category});
+    is($atom->package, $data{package});
+    is($atom->revision, $data{revision});
+    is($atom->slot, $data{slot});
+    is($atom->subslot, $data{subslot});
+    is($atom->use, $data{use});
+    ok("$atom" eq $data{atom});
+  }
+}
+
 # invalid atoms
 foreach my $str (@{$ATOM_DATA->{"invalid"}}) {
   like(
