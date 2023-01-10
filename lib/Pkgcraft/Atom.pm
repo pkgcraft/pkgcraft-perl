@@ -69,14 +69,14 @@ package Pkgcraft::Cpv {
 
   use overload
     fallback => 1,
-    '<=>'    => sub {
+    '<=>' => sub {
       if ($_[0]->isa("Pkgcraft::Cpv") && $_[1]->isa("Pkgcraft::Cpv")) {
         return pkgcraft_atom_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
       }
       die "Invalid types for comparison!";
     },
     'cmp' => sub { "$_[0]" cmp "$_[1]"; },
-    '""'  => 'stringify';
+    '""' => 'stringify';
 
   $ffi->attach('pkgcraft_atom_str' => ['atom_t'] => 'c_str');
 
@@ -100,7 +100,7 @@ package Pkgcraft::Atom {
   use Pkgcraft::Eapi;
   our @ISA = qw(Pkgcraft::Cpv);
 
-  use constant {BLOCKER_STRONG      => 0, BLOCKER_WEAK       => 1};
+  use constant {BLOCKER_STRONG => 0, BLOCKER_WEAK => 1};
   use constant {SLOT_OPERATOR_EQUAL => 0, SLOT_OPERATOR_STAR => 1};
 
   $ffi->attach('pkgcraft_atom_new' => ['string', 'eapi_t'] => 'atom_t');

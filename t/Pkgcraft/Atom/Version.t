@@ -26,13 +26,13 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   my $v1 = Pkgcraft::Atom::Version->new($s1);
   my $v2 = Pkgcraft::Atom::Version->new($s2);
   given ($op) {
-    when ("<")  { ok($v1 < $v2,  $str) }
+    when ("<") { ok($v1 < $v2, $str) }
     when ("<=") { ok($v1 <= $v2, $str) }
     when ("==") { ok($v1 == $v2, $str) }
     when ("!=") { ok($v1 != $v2, $str) }
     when (">=") { ok($v1 >= $v2, $str) }
-    when (">")  { ok($v1 > $v2,  $str) }
-    default     { die "unknown operator: $op" }
+    when (">") { ok($v1 > $v2, $str) }
+    default { die "unknown operator: $op" }
   }
 }
 

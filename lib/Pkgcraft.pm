@@ -11,21 +11,21 @@ use FFI::Platypus;
 our $VERSION = '0.01';
 
 use Exporter;
-our @ISA    = qw(Exporter);
+our @ISA = qw(Exporter);
 our @EXPORT = qw($ffi cast_array c_str string_array);
 
 our $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
-  lib     => 'pkgcraft',
+  lib => 'pkgcraft',
   libpath => 'pkgcraft/lib',
-  verify  => sub {
+  verify => sub {
     my ($name, $libpath) = @_;
 
     my $ffi = FFI::Platypus->new;
     $ffi->lib($libpath);
 
-    my $f          = $ffi->function('pkgcraft_lib_version', [] => 'string');
-    my $ver        = version->parse($f->call());
+    my $f = $ffi->function('pkgcraft_lib_version', [] => 'string');
+    my $ver = version->parse($f->call());
     my $MINVERSION = version->parse('0.0.4');
     my $MAXVERSION = version->parse('0.0.4');
 
@@ -38,7 +38,7 @@ $ffi->attach('pkgcraft_str_free' => ['opaque']);
 
 $ffi->custom_type(
   'c_str' => {
-    native_type    => 'opaque',
+    native_type => 'opaque',
     native_to_perl => sub {
       my ($ptr) = @_;
       my $str = cast_string($ptr);

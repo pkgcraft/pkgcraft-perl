@@ -37,14 +37,14 @@ $ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');
 
 use overload
   fallback => 1,
-  '<=>'    => sub {
+  '<=>' => sub {
     if ($_[0]->isa("Pkgcraft::Atom::Version") && $_[1]->isa("Pkgcraft::Atom::Version")) {
       return pkgcraft_version_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
     }
     die "Invalid types for comparison!";
   },
   'cmp' => sub { "$_[0]" cmp "$_[1]"; },
-  '""'  => 'stringify';
+  '""' => 'stringify';
 
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
 
