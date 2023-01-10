@@ -113,7 +113,7 @@ package Pkgcraft::Atom {
       if ($eapi->isa("Pkgcraft::Eapi")) {
         $eapi_ptr = $eapi->{_ptr};
       } else {
-        $eapi_ptr = $EAPIS->{$eapi}->{_ptr} or die "unknown EAPI: $eapi";
+        $eapi_ptr = EAPIS($eapi)->{_ptr} or die "unknown EAPI: $eapi";
       }
     }
 

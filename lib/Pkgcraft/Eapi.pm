@@ -8,7 +8,7 @@ use Pkgcraft;
 
 use Storable qw(dclone);
 use parent 'Exporter';
-our @EXPORT = qw($EAPIS_OFFICIAL $EAPIS $EAPI_LATEST);
+our @EXPORT = qw(EAPIS_OFFICIAL EAPIS $EAPI_LATEST);
 
 $ffi->type('opaque' => 'eapi_t');
 $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
@@ -40,18 +40,21 @@ sub _get_official_eapis {
     $eapis{$_} = $_;
   }
 
-  return \%eapis;
+  return %eapis;
 }
 
-our $EAPIS_OFFICIAL = _get_official_eapis();
-our $EAPI_LATEST = %$EAPIS_OFFICIAL{(keys %$EAPIS_OFFICIAL) - 1};
+sub EAPIS_OFFICIAL {
+  state %eapis = _get_official_eapis();
+  my $id = shift;
+  defined $id ? $eapis{$id} : \%eapis;
+}
+
+our $EAPI_LATEST = EAPIS_OFFICIAL((keys %{EAPIS_OFFICIAL()}) - 1);
 
 $ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
 
 sub _get_eapis {
-
-  # clone official EAPIS to avoid recreating them
-  my %eapis_official = %{dclone($EAPIS_OFFICIAL)};
+  my %eapis_official = %{dclone(EAPIS_OFFICIAL())};
   my $eapis_official_len = keys %eapis_official;
 
   my $length = 0;
@@ -65,11 +68,14 @@ sub _get_eapis {
     $eapis_unofficial{$_} = $_;
   }
 
-  my %eapis = (%eapis_official, %eapis_unofficial);
-  return \%eapis;
+  return (%eapis_official, %eapis_unofficial);
 }
 
-our $EAPIS = _get_eapis();
+sub EAPIS {
+  state %eapis = _get_eapis();
+  my $id = shift;
+  defined $id ? $eapis{$id} : \%eapis;
+}
 
 $ffi->attach('pkgcraft_eapi_cmp' => ['eapi_t', 'eapi_t'] => 'int');
 
