@@ -4,7 +4,7 @@ use TOML::Tiny qw(from_toml);
 use v5.30;
 no warnings "experimental";
 
-use Pkgcraft::Atom;
+use Pkgcraft::Atom::Version;
 
 # load test data
 open my $fh, '<', 'testdata/toml/version.toml' or die "Can't open file: $!";
