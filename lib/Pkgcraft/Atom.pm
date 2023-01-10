@@ -98,7 +98,7 @@ package Pkgcraft::Cpv {
 package Pkgcraft::Atom {
   use Pkgcraft;
   use Pkgcraft::Eapi;
-  our @ISA = qw(Pkgcraft::Cpv);
+  our @ISA = 'Pkgcraft::Cpv';
 
   use constant {BLOCKER_STRONG => 0, BLOCKER_WEAK => 1};
   use constant {SLOT_OPERATOR_EQUAL => 0, SLOT_OPERATOR_STAR => 1};

@@ -10,8 +10,7 @@ use FFI::Platypus;
 
 our $VERSION = '0.01';
 
-use Exporter;
-our @ISA = qw(Exporter);
+use parent 'Exporter';
 our @EXPORT = qw($ffi cast_array c_str string_array);
 
 our $ffi = FFI::Platypus->new(api => 2);

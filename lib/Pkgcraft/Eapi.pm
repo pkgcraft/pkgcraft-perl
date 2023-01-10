@@ -7,8 +7,7 @@ use warnings;
 use Pkgcraft;
 
 use Storable qw(dclone);
-use Exporter;
-our @ISA = qw(Exporter);
+use parent 'Exporter';
 our @EXPORT = qw($EAPIS_OFFICIAL $EAPIS $EAPI_LATEST);
 
 $ffi->type('opaque' => 'eapi_t');

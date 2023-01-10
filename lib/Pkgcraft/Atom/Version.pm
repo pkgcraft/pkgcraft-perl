@@ -69,7 +69,7 @@ package Pkgcraft::Atom::Version {
 
 package Pkgcraft::Atom::VersionWithOp {
   use Pkgcraft;
-  our @ISA = qw(Pkgcraft::Atom::Version);
+  use parent 'Pkgcraft::Atom::Version';
 
   $ffi->attach('pkgcraft_version_with_op' => ['string'] => 'version_t');
 
