@@ -16,11 +16,10 @@ sub new {
 
   my $eapi_ptr = undef;
   if (defined $eapi) {
-    if ($eapi->isa("Pkgcraft::Eapi")) {
-      $eapi_ptr = $eapi->{_ptr};
-    } else {
-      $eapi_ptr = EAPIS($eapi)->{_ptr} or die "unknown EAPI: $eapi";
+    if (!$eapi->isa("Pkgcraft::Eapi")) {
+      my $eapi = EAPIS($eapi) or die "unknown EAPI: $eapi";
     }
+    $eapi_ptr = $eapi->{_ptr};
   }
 
   my $ptr = C::pkgcraft_atom_new($str, $eapi_ptr);

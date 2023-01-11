@@ -47,7 +47,11 @@ $atom = Pkgcraft::Atom->new("cat/pkg::repo");
 ok($atom->repo eq "repo");
 
 # invalid EAPI
-ok(dies { Pkgcraft::Atom->new("cat/pkg", "unknown") });
+like(
+  dies { Pkgcraft::Atom->new("cat/pkg", "unknown") },
+  qr/unknown EAPI: unknown/,
+  "unknown EAPI: unknown"
+);
 
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
