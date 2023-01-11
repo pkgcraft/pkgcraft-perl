@@ -85,4 +85,9 @@ sub range {
   return \@eapis;
 }
 
+sub has {
+  my ($self, $feature) = @_;
+  return C::pkgcraft_eapi_has($self->{_ptr}, $feature);
+}
+
 1;

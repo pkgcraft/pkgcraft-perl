@@ -67,6 +67,7 @@ sub string_array {
 # EAPI support
 $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
 $ffi->attach('pkgcraft_eapi_cmp' => ['eapi_t', 'eapi_t'] => 'int');
+$ffi->attach('pkgcraft_eapi_has' => ['eapi_t', 'string'] => 'bool');
 $ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
 $ffi->attach('pkgcraft_eapis_free' => ['opaque', 'int']);
 $ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');

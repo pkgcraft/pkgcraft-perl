@@ -9,6 +9,12 @@ use Pkgcraft::Eapi;
 # verify $EAPI_LATEST reference
 is($EAPI_LATEST, EAPIS($EAPI_LATEST));
 
+# EAPI feature support
+ok(!EAPIS(0)->has("slot_deps"));
+ok(EAPIS(1)->has("slot_deps"));
+ok($EAPI_LATEST->has("slot_deps"));
+ok(!$EAPI_LATEST->has("nonexistent"));
+
 # test globals access
 ok(keys %{EAPIS()} > keys %{EAPIS_OFFICIAL()});
 
