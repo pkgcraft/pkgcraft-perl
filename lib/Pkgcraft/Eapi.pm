@@ -28,6 +28,9 @@ my $get_official_eapis = sub {
   my @arr = &$eapis_to_array($ptr, $length, 0);
   C::pkgcraft_eapis_free($ptr, $length);
 
+  # assign global variable for latest EAPI
+  our $EAPI_LATEST = $arr[$#arr];
+
   # convert array into hash
   my %eapis;
   foreach (@arr) {
@@ -42,8 +45,6 @@ sub EAPIS_OFFICIAL {
   my $id = shift;
   defined $id ? $eapis{$id} : \%eapis;
 }
-
-our $EAPI_LATEST = EAPIS_OFFICIAL((keys %{EAPIS_OFFICIAL()}) - 1);
 
 my $get_eapis = sub {
   my %eapis_official = %{dclone(EAPIS_OFFICIAL())};
