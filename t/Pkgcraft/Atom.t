@@ -52,7 +52,7 @@ ok(dies { Pkgcraft::Atom->new("cat/pkg", "unknown") });
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
   my %data = %$hash;
-  my $eapis = Pkgcraft::Eapi->range($data{eapis});
+  my $eapis = Pkgcraft::Eapi::range($data{eapis});
   foreach my $eapi (@$eapis) {
     my $atom = Pkgcraft::Atom->new($data{atom}, $eapi);
     ok($atom->category eq $data{category});

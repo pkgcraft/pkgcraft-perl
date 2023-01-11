@@ -81,7 +81,7 @@ use overload
   '""' => sub { $_[0]->{_id} };
 
 sub range {
-  my ($class, $str) = @_;
+  my $str = shift;
   my $length = 0;
   my $ptr = C::pkgcraft_eapis_range($str, \$length) or die "invalid EAPI range: $str";
   my @eapis = &$eapis_to_array($ptr, $length, 0);
