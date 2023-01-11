@@ -4,35 +4,29 @@ use v5.30;
 use strict;
 use warnings;
 
-use Pkgcraft;
+require _pkgcraft_c;
 
 use Storable qw(dclone);
 use parent 'Exporter';
 our @EXPORT = qw(EAPIS_OFFICIAL EAPIS $EAPI_LATEST);
 
-$ffi->type('opaque' => 'eapi_t');
-$ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
-
 my $eapis_to_array = sub {
   my ($arr_ptr, $length, $start) = @_;
-  my $arr = cast_array($arr_ptr);
+  my $arr = C::cast_array($arr_ptr);
   my @eapis;
   foreach my $elem ($start .. $length - 1) {
     my $ptr = $arr->[$elem];
-    my $id = pkgcraft_eapi_as_str($ptr);
+    my $id = C::pkgcraft_eapi_as_str($ptr);
     push @eapis, bless {_ptr => $ptr, _id => $id}, "Pkgcraft::Eapi";
   }
   return @eapis;
 };
 
-$ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');
-$ffi->attach('pkgcraft_eapis_free' => ['opaque', 'int']);
-
 my $get_official_eapis = sub {
   my $length = 0;
-  my $ptr = pkgcraft_eapis_official(\$length);
+  my $ptr = C::pkgcraft_eapis_official(\$length);
   my @arr = &$eapis_to_array($ptr, $length, 0);
-  pkgcraft_eapis_free($ptr, $length);
+  C::pkgcraft_eapis_free($ptr, $length);
 
   # convert array into hash
   my %eapis;
@@ -51,16 +45,14 @@ sub EAPIS_OFFICIAL {
 
 our $EAPI_LATEST = EAPIS_OFFICIAL((keys %{EAPIS_OFFICIAL()}) - 1);
 
-$ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
-
 my $get_eapis = sub {
   my %eapis_official = %{dclone(EAPIS_OFFICIAL())};
   my $eapis_official_len = keys %eapis_official;
 
   my $length = 0;
-  my $ptr = pkgcraft_eapis(\$length);
+  my $ptr = C::pkgcraft_eapis(\$length);
   my @arr = &$eapis_to_array($ptr, $length, $eapis_official_len);
-  pkgcraft_eapis_free($ptr, $length);
+  C::pkgcraft_eapis_free($ptr, $length);
 
   # convert array into hash
   my %eapis_unofficial;
@@ -77,26 +69,24 @@ sub EAPIS {
   defined $id ? $eapis{$id} : \%eapis;
 }
 
-$ffi->attach('pkgcraft_eapi_cmp' => ['eapi_t', 'eapi_t'] => 'int');
-
 use overload
   fallback => 1,
   '<=>' => sub {
     if ($_[0]->isa("Pkgcraft::Eapi") && $_[1]->isa("Pkgcraft::Eapi")) {
-      return pkgcraft_eapi_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+      return C::pkgcraft_eapi_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
     }
     die "Invalid types for comparison!";
   },
   'cmp' => sub { "$_[0]" cmp "$_[1]"; },
   '""' => sub { $_[0]->{_id} };
 
-$ffi->attach('pkgcraft_eapis_range' => ['string', 'int*'] => 'opaque');
-
 sub range {
   my ($class, $str) = @_;
   my $length = 0;
-  my $ptr = pkgcraft_eapis_range($str, \$length) or die "invalid EAPI range: $str";
+  my $ptr = C::pkgcraft_eapis_range($str, \$length) or die "invalid EAPI range: $str";
   my @eapis = &$eapis_to_array($ptr, $length, 0);
-  pkgcraft_eapis_free($ptr, $length);
+  C::pkgcraft_eapis_free($ptr, $length);
   return \@eapis;
 }
+
+1;

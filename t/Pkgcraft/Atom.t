@@ -48,9 +48,6 @@ $atom = Pkgcraft::Atom->new("cat/pkg:1=");
 ok($atom->slot eq "1");
 is($atom->slot_op, Pkgcraft::Atom->SLOT_OPERATOR_EQUAL);
 
-$ffi->attach('pkgcraft_atom_blocker_from_str' => ['string'] => 'int');
-$ffi->attach('pkgcraft_atom_slot_op_from_str' => ['string'] => 'int');
-
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
   my %data = %$hash;
@@ -60,7 +57,7 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
     ok($atom->category eq $data{category});
     ok($atom->package eq $data{package});
     if (defined $data{blocker}) {
-      is($atom->blocker, pkgcraft_atom_blocker_from_str($data{blocker}));
+      is($atom->blocker, C::pkgcraft_atom_blocker_from_str($data{blocker}));
     } else {
       is($atom->blocker, $data{blocker});
     }
@@ -73,7 +70,7 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
     is($atom->slot, $data{slot});
     is($atom->subslot, $data{subslot});
     if (defined $data{slot_op}) {
-      is($atom->slot_op, pkgcraft_atom_slot_op_from_str($data{slot_op}));
+      is($atom->slot_op, C::pkgcraft_atom_slot_op_from_str($data{slot_op}));
     } else {
       is($atom->slot_op, $data{slot_op});
     }
