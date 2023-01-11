@@ -41,6 +41,8 @@ ok($atom->cpv eq "cat/pkg-1");
 
 # invalid atom with explicit EAPI (slot deps in EAPI >= 1)
 ok(dies { Pkgcraft::Atom->new("cat/pkg:0", 0) });
+$atom = Pkgcraft::Atom->new("cat/pkg:0", 1);
+is($atom->slot, "0");
 
 # repo dep without EAPI (defaults to extended support)
 $atom = Pkgcraft::Atom->new("cat/pkg::repo");

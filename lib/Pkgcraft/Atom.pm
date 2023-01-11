@@ -17,7 +17,8 @@ sub new {
   my $eapi_ptr = undef;
   if (defined $eapi) {
     if (!$eapi->isa("Pkgcraft::Eapi")) {
-      my $eapi = EAPIS($eapi) or die "unknown EAPI: $eapi";
+      my $id = $eapi;
+      $eapi = EAPIS($id) or die "unknown EAPI: $id";
     }
     $eapi_ptr = $eapi->{_ptr};
   }
