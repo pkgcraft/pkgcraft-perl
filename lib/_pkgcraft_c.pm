@@ -49,6 +49,7 @@ $ffi->custom_type(
 # array support
 $ffi->attach_cast('cast_array', 'opaque', 'opaque[]');
 $ffi->attach('pkgcraft_str_array_free' => ['opaque', 'int']);
+
 sub string_array {
   my ($ptr, $length) = @_;
   if (defined $ptr) {

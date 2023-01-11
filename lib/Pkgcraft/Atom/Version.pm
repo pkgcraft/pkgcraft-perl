@@ -5,6 +5,7 @@ use warnings;
 require _pkgcraft_c;
 
 package Pkgcraft::Atom::Version {
+
   sub new {
     my ($class, $str) = @_;
     my $ptr = C::pkgcraft_version_new($str);
