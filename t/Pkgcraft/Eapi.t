@@ -6,6 +6,9 @@ use warnings;
 
 use Pkgcraft::Eapi;
 
+# verify $EAPI_LATEST reference
+is($EAPI_LATEST, EAPIS($EAPI_LATEST));
+
 # test globals access
 ok(keys %{EAPIS()} > keys %{EAPIS_OFFICIAL()});
 
@@ -13,9 +16,6 @@ ok(keys %{EAPIS()} > keys %{EAPIS_OFFICIAL()});
 foreach my $k (keys %{EAPIS_OFFICIAL()}) {
   is(EAPIS($k), EAPIS_OFFICIAL($k));
 }
-
-# verify $EAPI_LATEST reference
-is(EAPIS($EAPI_LATEST), $EAPI_LATEST);
 
 is(Pkgcraft::Eapi::range("..2"), [EAPIS(0), EAPIS(1)]);
 is(Pkgcraft::Eapi::range("3..4"), [EAPIS(3)]);

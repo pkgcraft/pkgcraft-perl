@@ -22,50 +22,45 @@ my $eapis_to_array = sub {
   return @eapis;
 };
 
-my $get_official_eapis = sub {
-  my $length = 0;
-  my $ptr = C::pkgcraft_eapis_official(\$length);
-  my @arr = &$eapis_to_array($ptr, $length, 0);
-  C::pkgcraft_eapis_free($ptr, $length);
-
-  # assign global variable for latest EAPI
-  our $EAPI_LATEST = $arr[$#arr];
-
-  # convert array into hash
+my $eapis_to_hash = sub {
+  my $arr = shift;
   my %eapis;
-  foreach (@arr) {
+  foreach (@$arr) {
     $eapis{$_} = $_;
   }
-
   return %eapis;
 };
 
-sub EAPIS_OFFICIAL {
-  state %eapis = &$get_official_eapis();
-  my $id = shift;
-  defined $id ? $eapis{$id} : \%eapis;
-}
-
-my $get_eapis = sub {
-  my %eapis_official = %{dclone(EAPIS_OFFICIAL())};
-  my $eapis_official_len = keys %eapis_official;
-
+my $get_eapis_official = sub {
   my $length = 0;
-  my $ptr = C::pkgcraft_eapis(\$length);
-  my @arr = &$eapis_to_array($ptr, $length, $eapis_official_len);
+  my $ptr = C::pkgcraft_eapis_official(\$length);
+  my @eapis = &$eapis_to_array($ptr, $length, 0);
   C::pkgcraft_eapis_free($ptr, $length);
-
-  # convert array into hash
-  my %eapis_unofficial;
-  foreach (@arr) {
-    $eapis_unofficial{$_} = $_;
-  }
-
-  return (%eapis_official, %eapis_unofficial);
+  return @eapis;
 };
 
+my @eapis_official = &$get_eapis_official();
+my %eapis_official = &$eapis_to_hash(\@eapis_official);
+our $EAPI_LATEST = $eapis_official[$#eapis_official];
+
+sub EAPIS_OFFICIAL {
+  my $id = shift;
+  defined $id ? $eapis_official{$id} : \%eapis_official;
+}
+
+my $get_eapis_unofficial = sub {
+  my $length = 0;
+  my $ptr = C::pkgcraft_eapis(\$length);
+  my @eapis = &$eapis_to_array($ptr, $length, $#eapis_official);
+  C::pkgcraft_eapis_free($ptr, $length);
+  return @eapis;
+};
+
+my @eapis_unofficial = &$get_eapis_unofficial();
+my @eapis = (@eapis_official, @eapis_unofficial);
+my %eapis = &$eapis_to_hash(\@eapis);
+
 sub EAPIS {
-  state %eapis = &$get_eapis();
   my $id = shift;
   defined $id ? $eapis{$id} : \%eapis;
 }
