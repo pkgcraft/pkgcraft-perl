@@ -15,6 +15,7 @@ unless ($ATOM_DATA) {
   die "Error parsing toml: $err";
 }
 
+# valid CPV
 my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
 ok($cpv->category eq "cat");
 ok($cpv->package eq "pkg");
@@ -22,6 +23,31 @@ ok($cpv->version eq "1");
 ok($cpv->revision eq "0");
 ok($cpv->cpn eq "cat/pkg");
 ok($cpv eq "cat/pkg-1");
+
+# regular atom fails for CPV
+ok(dies { Pkgcraft::Cpv->new("=cat/pkg-1") });
+
+# invalid comparison types
+ok(dies { $cpv == "cat/pkg-1" });
+
+# valid comparisons
+my $cpv2 = Pkgcraft::Cpv->new("cat/pkg-2");
+ok($cpv != $cpv2);
+ok($cpv < $cpv2);
+
+# valid atom without EAPI
+my $atom = Pkgcraft::Atom->new("=cat/pkg-1");
+ok($atom->cpv eq "cat/pkg-1");
+
+# invalid atom with explicit EAPI (slot deps in EAPI >= 1)
+ok(dies { Pkgcraft::Atom->new("cat/pkg:0", 0) });
+
+# repo dep without EAPI (defaults to extended support)
+$atom = Pkgcraft::Atom->new("cat/pkg::repo");
+ok($atom->repo eq "repo");
+
+# invalid EAPI
+ok(dies { Pkgcraft::Atom->new("cat/pkg", "unknown") });
 
 # valid atoms
 foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
@@ -50,6 +76,7 @@ foreach my $hash (@{$ATOM_DATA->{"valid"}}) {
       is($atom->slot_op, $data{slot_op});
     }
     is($atom->use, $data{use});
+    is($atom->repo, $data{repo});
     ok("$atom" eq $data{atom});
   }
 }
