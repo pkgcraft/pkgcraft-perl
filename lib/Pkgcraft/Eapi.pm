@@ -25,8 +25,8 @@ my $eapis_to_array = sub {
 my $eapis_to_hash = sub {
   my $arr = shift;
   my %eapis;
-  foreach (@$arr) {
-    $eapis{$_} = $_;
+  foreach my $eapi (@$arr) {
+    $eapis{$eapi} = $eapi;
   }
   return %eapis;
 };
