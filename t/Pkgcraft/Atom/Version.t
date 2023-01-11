@@ -20,6 +20,14 @@ my $ver = Pkgcraft::Atom::Version->new("1-r2");
 ok($ver->revision eq "2");
 ok($ver eq "1-r2");
 
+# invalid versions
+ok(dies { Pkgcraft::Atom::Version->new("r2") });
+ok(dies { Pkgcraft::Atom::VersionWithOp->new("1-r2") });
+
+# invalid comparisons
+ok(dies { $ver == "1-r2" });
+ok(dies { Pkgcraft::Atom::VersionWithOp->new(">1-r2") == ">1-r2" });
+
 # version comparisons
 foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;

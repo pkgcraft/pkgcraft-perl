@@ -62,7 +62,7 @@ package Pkgcraft::Atom::VersionWithOp {
     if (defined $ptr) {
       return bless {_ptr => $ptr, ref => 0}, $class;
     }
-    die "invalid version: $str";
+    die "invalid version with operator: $str";
   }
 }
 
