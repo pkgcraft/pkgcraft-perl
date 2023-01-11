@@ -13,7 +13,7 @@ our @EXPORT = qw(EAPIS_OFFICIAL EAPIS $EAPI_LATEST);
 $ffi->type('opaque' => 'eapi_t');
 $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
 
-sub _eapis_to_array {
+my $eapis_to_array = sub {
   my ($arr_ptr, $length, $start) = @_;
   my $arr = cast_array($arr_ptr);
   my @eapis;
@@ -23,15 +23,15 @@ sub _eapis_to_array {
     push @eapis, bless {_ptr => $ptr, _id => $id}, "Pkgcraft::Eapi";
   }
   return @eapis;
-}
+};
 
 $ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');
 $ffi->attach('pkgcraft_eapis_free' => ['opaque', 'int']);
 
-sub _get_official_eapis {
+my $get_official_eapis = sub {
   my $length = 0;
   my $ptr = pkgcraft_eapis_official(\$length);
-  my @arr = _eapis_to_array($ptr, $length, 0);
+  my @arr = &$eapis_to_array($ptr, $length, 0);
   pkgcraft_eapis_free($ptr, $length);
 
   # convert array into hash
@@ -41,10 +41,10 @@ sub _get_official_eapis {
   }
 
   return %eapis;
-}
+};
 
 sub EAPIS_OFFICIAL {
-  state %eapis = _get_official_eapis();
+  state %eapis = &$get_official_eapis();
   my $id = shift;
   defined $id ? $eapis{$id} : \%eapis;
 }
@@ -53,13 +53,13 @@ our $EAPI_LATEST = EAPIS_OFFICIAL((keys %{EAPIS_OFFICIAL()}) - 1);
 
 $ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
 
-sub _get_eapis {
+my $get_eapis = sub {
   my %eapis_official = %{dclone(EAPIS_OFFICIAL())};
   my $eapis_official_len = keys %eapis_official;
 
   my $length = 0;
   my $ptr = pkgcraft_eapis(\$length);
-  my @arr = _eapis_to_array($ptr, $length, $eapis_official_len);
+  my @arr = &$eapis_to_array($ptr, $length, $eapis_official_len);
   pkgcraft_eapis_free($ptr, $length);
 
   # convert array into hash
@@ -69,10 +69,10 @@ sub _get_eapis {
   }
 
   return (%eapis_official, %eapis_unofficial);
-}
+};
 
 sub EAPIS {
-  state %eapis = _get_eapis();
+  state %eapis = &$get_eapis();
   my $id = shift;
   defined $id ? $eapis{$id} : \%eapis;
 }
@@ -96,7 +96,7 @@ sub range {
   my ($class, $str) = @_;
   my $length = 0;
   my $ptr = pkgcraft_eapis_range($str, \$length) or die "invalid EAPI range: $str";
-  my @eapis = _eapis_to_array($ptr, $length, 0);
+  my @eapis = &$eapis_to_array($ptr, $length, 0);
   pkgcraft_eapis_free($ptr, $length);
   return \@eapis;
 }
