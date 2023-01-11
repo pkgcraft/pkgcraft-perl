@@ -19,5 +19,12 @@ is(EAPIS($EAPI_LATEST), $EAPI_LATEST);
 
 is(Pkgcraft::Eapi->range("..2"), [EAPIS(0), EAPIS(1)]);
 is(Pkgcraft::Eapi->range("3..4"), [EAPIS(3)]);
+ok(dies { Pkgcraft::Eapi->range("..9999") });
+
+# comparisons
+ok(EAPIS(0) == EAPIS_OFFICIAL(0));
+ok(EAPIS(1) > EAPIS(0));
+ok(dies { EAPIS(0) == "0" });
+ok(EAPIS(0) eq "0");
 
 done_testing;
