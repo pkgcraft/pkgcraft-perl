@@ -7,12 +7,10 @@ require _pkgcraft_c;
 package Pkgcraft::Atom::Version {
 
   sub new {
-    my ($class, $str) = @_;
-    my $ptr = C::pkgcraft_version_new($str);
-    if (defined $ptr) {
-      return bless {_ptr => $ptr, ref => 0}, $class;
-    }
-    die "invalid version: $str";
+    my $class = shift;
+    my $str = shift // die "missing version string";
+    my $ptr = C::pkgcraft_version_new($str) // die "invalid version: $str";
+    return bless {_ptr => $ptr, ref => 0}, $class;
   }
 
   sub _from_ptr {
@@ -24,7 +22,7 @@ package Pkgcraft::Atom::Version {
   }
 
   sub revision {
-    my ($self) = @_;
+    my $self = shift;
     return C::pkgcraft_version_revision($self->{_ptr});
   }
 
@@ -41,12 +39,12 @@ package Pkgcraft::Atom::Version {
     '""' => 'stringify';
 
   sub stringify {
-    my ($self) = @_;
+    my $self = shift;
     return C::pkgcraft_version_str($self->{_ptr});
   }
 
   sub DESTROY {
-    my ($self) = @_;
+    my $self = shift;
     if (not($self->{ref})) {
       C::pkgcraft_version_free($self->{_ptr});
     }
@@ -57,12 +55,11 @@ package Pkgcraft::Atom::VersionWithOp {
   use parent 'Pkgcraft::Atom::Version';
 
   sub new {
-    my ($class, $str) = @_;
-    my $ptr = C::pkgcraft_version_with_op($str);
-    if (defined $ptr) {
-      return bless {_ptr => $ptr, ref => 0}, $class;
-    }
-    die "invalid version with operator: $str";
+    my $class = shift;
+    my $str = shift // die "missing version string";
+    my $ptr = C::pkgcraft_version_with_op($str)
+      // die "invalid version with operator: $str";
+    return bless {_ptr => $ptr, ref => 0}, $class;
   }
 }
 

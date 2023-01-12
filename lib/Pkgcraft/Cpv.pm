@@ -8,12 +8,10 @@ require _pkgcraft_c;
 use Pkgcraft::Atom::Version;
 
 sub new {
-  my ($class, $str) = @_;
-  my $ptr = C::pkgcraft_cpv_new($str);
-  if (defined $ptr) {
-    return bless {_ptr => $ptr, ref => 0}, $class;
-  }
-  die "invalid CPV: $str";
+  my $class = shift;
+  my $str = shift // die "missing CPV string";
+  my $ptr = C::pkgcraft_cpv_new($str) // die "invalid CPV: $str";
+  return bless {_ptr => $ptr, ref => 0}, $class;
 }
 
 sub _from_ptr {
@@ -25,28 +23,28 @@ sub _from_ptr {
 }
 
 sub category {
-  my ($self) = @_;
+  my $self = shift;
   return C::pkgcraft_atom_category($self->{_ptr});
 }
 
 sub package {
-  my ($self) = @_;
+  my $self = shift;
   return C::pkgcraft_atom_package($self->{_ptr});
 }
 
 sub version {
-  my ($self) = @_;
+  my $self = shift;
   my $ptr = C::pkgcraft_atom_version($self->{_ptr});
   return Pkgcraft::Atom::Version->_from_ptr($ptr);
 }
 
 sub revision {
-  my ($self) = @_;
+  my $self = shift;
   return C::pkgcraft_atom_revision($self->{_ptr});
 }
 
 sub cpn {
-  my ($self) = @_;
+  my $self = shift;
   return C::pkgcraft_atom_cpn($self->{_ptr});
 }
 
@@ -62,12 +60,12 @@ use overload
   '""' => 'stringify';
 
 sub stringify {
-  my ($self) = @_;
+  my $self = shift;
   return C::pkgcraft_atom_str($self->{_ptr});
 }
 
 sub DESTROY {
-  my ($self) = @_;
+  my $self = shift;
   if (not($self->{ref})) {
     C::pkgcraft_atom_free($self->{_ptr});
   }

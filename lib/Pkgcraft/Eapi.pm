@@ -77,9 +77,9 @@ use overload
   '""' => sub { $_[0]->{_id} };
 
 sub range {
-  my $str = shift or die "missing range argument";
+  my $str = shift // die "missing range argument";
   my $length = 0;
-  my $ptr = C::pkgcraft_eapis_range($str, \$length) or die "invalid EAPI range: $str";
+  my $ptr = C::pkgcraft_eapis_range($str, \$length) // die "invalid EAPI range: $str";
   my @eapis = &$eapis_to_array($ptr, $length, 0);
   C::pkgcraft_eapis_free($ptr, $length);
   return \@eapis;
@@ -87,7 +87,7 @@ sub range {
 
 sub has {
   my $self = shift;
-  my $feature = shift or die "missing feature argument";
+  my $feature = shift // die "missing feature argument";
   return C::pkgcraft_eapi_has($self->{_ptr}, $feature);
 }
 

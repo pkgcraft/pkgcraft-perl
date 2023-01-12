@@ -30,6 +30,9 @@ ok(dies { Pkgcraft::Cpv->new("=cat/pkg-1") });
 # invalid comparison types
 ok(dies { $cpv == "cat/pkg-1" });
 
+# missing string arg
+ok(dies { Pkgcraft::Cpv->new() });
+
 # valid comparisons
 my $cpv2 = Pkgcraft::Cpv->new("cat/pkg-2");
 ok($cpv != $cpv2);
@@ -38,6 +41,9 @@ ok($cpv < $cpv2);
 # valid atom without EAPI
 my $atom = Pkgcraft::Atom->new("=cat/pkg-1");
 ok($atom->cpv eq "cat/pkg-1");
+
+# missing string arg
+ok(dies { Pkgcraft::Atom->new() });
 
 # invalid atom with explicit EAPI (slot deps in EAPI >= 1)
 ok(dies { Pkgcraft::Atom->new("cat/pkg:0", 0) });

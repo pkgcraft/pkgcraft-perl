@@ -20,6 +20,10 @@ my $ver = Pkgcraft::Atom::Version->new("1-r2");
 ok($ver->revision eq "2");
 ok($ver eq "1-r2");
 
+# missing string arg
+ok(dies { Pkgcraft::Atom::Version->new() });
+ok(dies { Pkgcraft::Atom::VersionWithOp->new() });
+
 # invalid versions
 ok(dies { Pkgcraft::Atom::Version->new("r2") });
 ok(dies { Pkgcraft::Atom::VersionWithOp->new("1-r2") });
