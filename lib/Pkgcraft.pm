@@ -2,7 +2,6 @@ package Pkgcraft;
 
 use v5.30;
 use strict;
-use version;
 use warnings;
 
-our $VERSION = '0.01';
+use version; our $VERSION = version->declare("v0.0.1");
