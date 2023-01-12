@@ -14,6 +14,7 @@ ok(!EAPIS(0)->has("slot_deps"));
 ok(EAPIS(1)->has("slot_deps"));
 ok($EAPI_LATEST->has("slot_deps"));
 ok(!$EAPI_LATEST->has("nonexistent"));
+ok(dies { $EAPI_LATEST->has() });
 
 # test globals access
 ok(keys %{EAPIS()} > keys %{EAPIS_OFFICIAL()});
@@ -26,6 +27,7 @@ foreach my $k (keys %{EAPIS_OFFICIAL()}) {
 is(Pkgcraft::Eapi::range("..2"), [EAPIS(0), EAPIS(1)]);
 is(Pkgcraft::Eapi::range("3..4"), [EAPIS(3)]);
 ok(dies { Pkgcraft::Eapi::range("..9999") });
+ok(dies { Pkgcraft::Eapi::range() });
 
 # comparisons
 ok(EAPIS(0) == EAPIS_OFFICIAL(0));
