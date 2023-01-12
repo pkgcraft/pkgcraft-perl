@@ -50,10 +50,17 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
 
 # version sorting
 foreach my $arrays (@{$VERSION_DATA->{"sorting"}}) {
-  my ($unsorted, $expected) = @$arrays;
+  my ($expected, $equal) = @$arrays;
+  my @reversed = reverse @$expected;
   my @sorted
     = sort { Pkgcraft::Atom::Version->new($a) <=> Pkgcraft::Atom::Version->new($b) }
-    @$unsorted;
+    @reversed;
+
+  # equal versions aren't sorted so reversing should restore the original order
+  if ($equal) {
+    @sorted = reverse @sorted;
+  }
+
   is(\@sorted, $expected);
 }
 

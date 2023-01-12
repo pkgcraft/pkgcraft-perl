@@ -113,8 +113,15 @@ foreach my $str (@{$ATOM_DATA->{"compares"}}) {
 
 # atom sorting
 foreach my $arrays (@{$ATOM_DATA->{"sorting"}}) {
-  my ($unsorted, $expected) = @$arrays;
-  my @sorted = sort { Pkgcraft::Atom->new($a) <=> Pkgcraft::Atom->new($b) } @$unsorted;
+  my ($expected, $equal) = @$arrays;
+  my @reversed = reverse @$expected;
+  my @sorted = sort { Pkgcraft::Atom->new($a) <=> Pkgcraft::Atom->new($b) } @reversed;
+
+  # equal atoms aren't sorted so reversing should restore the original order
+  if ($equal) {
+    @sorted = reverse @sorted;
+  }
+
   is(\@sorted, $expected);
 }
 
