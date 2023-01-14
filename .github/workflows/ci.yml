@@ -6,6 +6,7 @@ on:
     paths:
       - "lib/**"
       - "t/**"
+      - "testdata/*"
       - "Makefile.PL"
       - ".github/workflows/ci.yml"
   pull_request:
