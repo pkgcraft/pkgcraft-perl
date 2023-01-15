@@ -11,13 +11,13 @@ sub new {
   my $class = shift;
   my $str = shift // die "missing CPV string";
   my $ptr = C::pkgcraft_cpv_new($str) // die "invalid CPV: $str";
-  return bless {_ptr => $ptr, ref => 0}, $class;
+  return bless {_ptr => $ptr}, $class;
 }
 
 sub _from_ptr {
   my ($class, $ptr) = @_;
   if (defined $ptr) {
-    return bless {_ptr => $ptr, ref => 1}, $class;
+    return bless {_ptr => $ptr}, $class;
   }
   return;
 }
@@ -66,7 +66,5 @@ sub stringify {
 
 sub DESTROY {
   my $self = shift;
-  if (not($self->{ref})) {
-    C::pkgcraft_atom_free($self->{_ptr});
-  }
+  C::pkgcraft_atom_free($self->{_ptr});
 }
