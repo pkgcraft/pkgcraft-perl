@@ -24,7 +24,7 @@ sub new {
   }
 
   my $ptr = C::pkgcraft_atom_new($str, $eapi_ptr) // die "invalid atom: $str";
-  return bless {_ptr => $ptr, ref => 0}, $class;
+  return bless {_ptr => $ptr}, $class;
 }
 
 sub blocker {
