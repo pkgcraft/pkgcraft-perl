@@ -40,7 +40,7 @@ package Pkgcraft::Atom::Version {
 
   sub stringify {
     my $self = shift;
-    return C::pkgcraft_version_str($self->{_ptr});
+    return C::pkgcraft_version_str_with_op($self->{_ptr});
   }
 
   sub DESTROY {

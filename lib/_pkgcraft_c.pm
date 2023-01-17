@@ -104,4 +104,5 @@ $ffi->attach('pkgcraft_version_free' => ['version_t']);
 $ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
 $ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'c_str');
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
+$ffi->attach('pkgcraft_version_str_with_op' => ['version_t'] => 'c_str');
 $ffi->attach('pkgcraft_version_with_op' => ['string'] => 'version_t');
