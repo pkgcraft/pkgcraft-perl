@@ -64,6 +64,12 @@ sub stringify {
   return C::pkgcraft_atom_str($self->{_ptr});
 }
 
+sub intersects {
+  my $self = shift->{_ptr};
+  my $other = shift->{_ptr} // die "missing atom object";
+  return C::pkgcraft_atom_intersects($self, $other);
+}
+
 sub DESTROY {
   my $self = shift;
   C::pkgcraft_atom_free($self->{_ptr});

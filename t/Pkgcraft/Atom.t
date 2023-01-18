@@ -125,4 +125,16 @@ foreach my $hash (@{$ATOM_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
+# TODO: use shared intersects test data
+# intersects
+my $a1 = Pkgcraft::Atom->new("=a/b-1.0.2");
+my $a2 = Pkgcraft::Atom->new("=a/b-1.0.2-r0");
+ok($a1->intersects($a2));
+$a1 = Pkgcraft::Atom->new("=a/b-0");
+$a2 = Pkgcraft::Atom->new("=a/b-1");
+ok(!$a1->intersects($a2));
+$a1 = Pkgcraft::Cpv->new("a/b-0");
+$a2 = Pkgcraft::Atom->new("=a/b-0*");
+ok($a1->intersects($a2));
+
 done_testing;
