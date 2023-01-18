@@ -64,4 +64,16 @@ foreach my $hash (@{$VERSION_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
+# TODO: use shared intersects test data
+# intersects
+my $v1 = Pkgcraft::Atom::Version->new("1.0.2");
+my $v2 = Pkgcraft::Atom::Version->new("1.0.2-r0");
+ok($v1->intersects($v2));
+$v1 = Pkgcraft::Atom::Version->new("0");
+$v2 = Pkgcraft::Atom::Version->new("1");
+ok(!$v1->intersects($v2));
+$v1 = Pkgcraft::Atom::Version->new("0");
+$v2 = Pkgcraft::Atom::VersionWithOp->new("=0*");
+ok($v1->intersects($v2));
+
 done_testing;

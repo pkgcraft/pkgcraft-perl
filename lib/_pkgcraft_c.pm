@@ -101,6 +101,7 @@ $ffi->attach('pkgcraft_cpv_new' => ['string'] => 'atom_t');
 # version support
 $ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');
 $ffi->attach('pkgcraft_version_free' => ['version_t']);
+$ffi->attach('pkgcraft_version_intersects' => ['version_t', 'version_t'] => 'bool');
 $ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
 $ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'c_str');
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');

@@ -43,6 +43,12 @@ package Pkgcraft::Atom::Version {
     return C::pkgcraft_version_str_with_op($self->{_ptr});
   }
 
+  sub intersects {
+    my $self = shift->{_ptr};
+    my $other = shift->{_ptr} // die "missing version object";
+    return C::pkgcraft_version_intersects($self, $other);
+  }
+
   sub DESTROY {
     my $self = shift;
     C::pkgcraft_version_free($self->{_ptr});
