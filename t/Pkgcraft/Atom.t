@@ -4,6 +4,7 @@ use TOML::Tiny qw(from_toml);
 use v5.30;
 use strict;
 use warnings;
+no warnings qw(experimental);
 
 use Pkgcraft::Atom;
 
@@ -102,13 +103,20 @@ foreach my $str (@{$ATOM_DATA->{"invalid"}}) {
   );
 }
 
-# equivalent atoms with unequal strings
+# atom comparisons
 foreach my $str (@{$ATOM_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;
   my $a1 = Pkgcraft::Atom->new($s1);
   my $a2 = Pkgcraft::Atom->new($s2);
-  ok($a1 == $a2);
-  ok($a1 ne $a2);
+  given ($op) {
+    when ("<") { ok($a1 < $a2, $str) }
+    when ("<=") { ok($a1 <= $a2, $str) }
+    when ("==") { ok($a1 == $a2, $str) }
+    when ("!=") { ok($a1 != $a2, $str) }
+    when (">=") { ok($a1 >= $a2, $str) }
+    when (">") { ok($a1 > $a2, $str) }
+    default { die "unknown operator: $op" }
+  }
 }
 
 # atom sorting
