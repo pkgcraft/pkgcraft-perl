@@ -40,7 +40,7 @@ package Pkgcraft::Atom::Version {
 
   sub stringify {
     my $self = shift;
-    return C::pkgcraft_version_str_with_op($self->{_ptr});
+    return C::pkgcraft_version_str($self->{_ptr});
   }
 
   sub intersects {
@@ -64,6 +64,11 @@ package Pkgcraft::Atom::VersionWithOp {
     my $ptr = C::pkgcraft_version_with_op($str)
       // die "invalid version with operator: $str";
     return bless {_ptr => $ptr}, $class;
+  }
+
+  sub stringify {
+    my $self = shift;
+    return C::pkgcraft_version_str_with_op($self->{_ptr});
   }
 }
 
