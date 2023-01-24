@@ -8,8 +8,8 @@ require _pkgcraft_c;
 use Pkgcraft::Eapi;
 use parent 'Pkgcraft::Cpv';
 
-use constant {BLOCKER_STRONG => 0, BLOCKER_WEAK => 1};
-use constant {SLOT_OPERATOR_EQUAL => 0, SLOT_OPERATOR_STAR => 1};
+use constant {BLOCKER_STRONG => 1, BLOCKER_WEAK => 2};
+use constant {SLOT_OPERATOR_EQUAL => 1, SLOT_OPERATOR_STAR => 2};
 
 sub new {
   my $class = shift;
@@ -30,7 +30,7 @@ sub new {
 sub blocker {
   my $self = shift;
   my $blocker = C::pkgcraft_atom_blocker($self->{_ptr});
-  if ($blocker >= 0) {
+  if ($blocker > 0) {
     return $blocker;
   }
   return;
@@ -49,7 +49,7 @@ sub subslot {
 sub slot_op {
   my $self = shift;
   my $slot_op = C::pkgcraft_atom_slot_op($self->{_ptr});
-  if ($slot_op >= 0) {
+  if ($slot_op > 0) {
     return $slot_op;
   }
   return;
