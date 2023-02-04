@@ -40,7 +40,11 @@ sub version {
 
 sub revision {
   my $self = shift;
-  return C::pkgcraft_atom_revision($self->{_ptr});
+  my $version = $self->version;
+  if (defined $version) {
+    return $version->revision;
+  }
+  return;
 }
 
 sub cpn {

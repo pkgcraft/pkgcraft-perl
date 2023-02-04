@@ -89,7 +89,6 @@ $ffi->attach('pkgcraft_atom_intersects' => ['atom_t', 'atom_t'] => 'bool');
 $ffi->attach('pkgcraft_atom_new' => ['string', 'eapi_t'] => 'atom_t');
 $ffi->attach('pkgcraft_atom_package' => ['atom_t'] => 'c_str');
 $ffi->attach('pkgcraft_atom_repo' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_revision' => ['atom_t'] => 'c_str');
 $ffi->attach('pkgcraft_atom_slot' => ['atom_t'] => 'c_str');
 $ffi->attach('pkgcraft_atom_slot_op' => ['atom_t'] => 'int');
 $ffi->attach('pkgcraft_atom_slot_op_from_str' => ['string'] => 'int');
