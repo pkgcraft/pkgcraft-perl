@@ -21,7 +21,7 @@ my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
 ok($cpv->category eq "cat");
 ok($cpv->package eq "pkg");
 ok($cpv->version eq "1");
-ok($cpv->revision eq "0");
+is($cpv->revision, undef);
 ok($cpv->cpn eq "cat/pkg");
 ok($cpv eq "cat/pkg-1");
 
