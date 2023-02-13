@@ -31,7 +31,7 @@ $ffi->lib(find_lib_or_die(
 ));
 
 # types
-$ffi->type('opaque' => 'atom_t');
+$ffi->type('opaque' => 'pkgdep_t');
 $ffi->type('opaque' => 'eapi_t');
 $ffi->type('opaque' => 'version_t');
 
@@ -77,26 +77,26 @@ $ffi->attach('pkgcraft_eapis_free' => ['opaque', 'int']);
 $ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');
 $ffi->attach('pkgcraft_eapis_range' => ['string', 'int*'] => 'opaque');
 
-# atom support
-$ffi->attach('pkgcraft_atom_blocker' => ['atom_t'] => 'int');
-$ffi->attach('pkgcraft_atom_blocker_from_str' => ['string'] => 'int');
-$ffi->attach('pkgcraft_atom_category' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_cmp' => ['atom_t', 'atom_t'] => 'int');
-$ffi->attach('pkgcraft_atom_cpn' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_cpv' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_free' => ['atom_t']);
-$ffi->attach('pkgcraft_atom_intersects' => ['atom_t', 'atom_t'] => 'bool');
-$ffi->attach('pkgcraft_atom_new' => ['string', 'eapi_t'] => 'atom_t');
-$ffi->attach('pkgcraft_atom_package' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_repo' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_slot' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_slot_op' => ['atom_t'] => 'int');
-$ffi->attach('pkgcraft_atom_slot_op_from_str' => ['string'] => 'int');
-$ffi->attach('pkgcraft_atom_str' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_subslot' => ['atom_t'] => 'c_str');
-$ffi->attach('pkgcraft_atom_use_deps' => ['atom_t', 'int*'] => 'opaque');
-$ffi->attach('pkgcraft_atom_version' => ['atom_t'] => 'version_t');
-$ffi->attach('pkgcraft_cpv_new' => ['string'] => 'atom_t');
+# pkgdep support
+$ffi->attach('pkgcraft_pkgdep_blocker' => ['pkgdep_t'] => 'int');
+$ffi->attach('pkgcraft_pkgdep_blocker_from_str' => ['string'] => 'int');
+$ffi->attach('pkgcraft_pkgdep_category' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_cmp' => ['pkgdep_t', 'pkgdep_t'] => 'int');
+$ffi->attach('pkgcraft_pkgdep_cpn' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_cpv' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_free' => ['pkgdep_t']);
+$ffi->attach('pkgcraft_pkgdep_intersects' => ['pkgdep_t', 'pkgdep_t'] => 'bool');
+$ffi->attach('pkgcraft_pkgdep_new' => ['string', 'eapi_t'] => 'pkgdep_t');
+$ffi->attach('pkgcraft_pkgdep_package' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_repo' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_slot' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_slot_op' => ['pkgdep_t'] => 'int');
+$ffi->attach('pkgcraft_pkgdep_slot_op_from_str' => ['string'] => 'int');
+$ffi->attach('pkgcraft_pkgdep_str' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_subslot' => ['pkgdep_t'] => 'c_str');
+$ffi->attach('pkgcraft_pkgdep_use_deps' => ['pkgdep_t', 'int*'] => 'opaque');
+$ffi->attach('pkgcraft_pkgdep_version' => ['pkgdep_t'] => 'version_t');
+$ffi->attach('pkgcraft_cpv_new' => ['string'] => 'pkgdep_t');
 
 # version support
 $ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');

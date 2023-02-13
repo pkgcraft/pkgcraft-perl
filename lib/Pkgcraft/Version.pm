@@ -4,7 +4,7 @@ use warnings;
 
 require _pkgcraft_c;
 
-package Pkgcraft::Atom::Version {
+package Pkgcraft::Version {
 
   sub new {
     my $class = shift;
@@ -29,8 +29,7 @@ package Pkgcraft::Atom::Version {
   use overload
     fallback => 1,
     '<=>' => sub {
-      if ($_[0]->isa("Pkgcraft::Atom::Version") && $_[1]->isa("Pkgcraft::Atom::Version"))
-      {
+      if ($_[0]->isa("Pkgcraft::Version") && $_[1]->isa("Pkgcraft::Version")) {
         return C::pkgcraft_version_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
       }
       die "Invalid types for comparison!";
@@ -55,8 +54,8 @@ package Pkgcraft::Atom::Version {
   }
 }
 
-package Pkgcraft::Atom::VersionWithOp {
-  use parent 'Pkgcraft::Atom::Version';
+package Pkgcraft::VersionWithOp {
+  use parent 'Pkgcraft::Version';
 
   sub new {
     my $class = shift;

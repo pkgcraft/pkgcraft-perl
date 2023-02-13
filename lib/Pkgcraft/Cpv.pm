@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 require _pkgcraft_c;
-use Pkgcraft::Atom::Version;
+use Pkgcraft::Version;
 
 sub new {
   my $class = shift;
@@ -24,18 +24,18 @@ sub _from_ptr {
 
 sub category {
   my $self = shift;
-  return C::pkgcraft_atom_category($self->{_ptr});
+  return C::pkgcraft_pkgdep_category($self->{_ptr});
 }
 
 sub package {
   my $self = shift;
-  return C::pkgcraft_atom_package($self->{_ptr});
+  return C::pkgcraft_pkgdep_package($self->{_ptr});
 }
 
 sub version {
   my $self = shift;
-  my $ptr = C::pkgcraft_atom_version($self->{_ptr});
-  return Pkgcraft::Atom::Version->_from_ptr($ptr);
+  my $ptr = C::pkgcraft_pkgdep_version($self->{_ptr});
+  return Pkgcraft::Version->_from_ptr($ptr);
 }
 
 sub revision {
@@ -49,14 +49,14 @@ sub revision {
 
 sub cpn {
   my $self = shift;
-  return C::pkgcraft_atom_cpn($self->{_ptr});
+  return C::pkgcraft_pkgdep_cpn($self->{_ptr});
 }
 
 use overload
   fallback => 1,
   '<=>' => sub {
     if ($_[0]->isa("Pkgcraft::Cpv") && $_[1]->isa("Pkgcraft::Cpv")) {
-      return C::pkgcraft_atom_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+      return C::pkgcraft_pkgdep_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
     }
     die "Invalid types for comparison!";
   },
@@ -65,16 +65,16 @@ use overload
 
 sub stringify {
   my $self = shift;
-  return C::pkgcraft_atom_str($self->{_ptr});
+  return C::pkgcraft_pkgdep_str($self->{_ptr});
 }
 
 sub intersects {
   my $self = shift->{_ptr};
-  my $other = shift->{_ptr} // die "missing atom object";
-  return C::pkgcraft_atom_intersects($self, $other);
+  my $other = shift->{_ptr} // die "missing pkgdep object";
+  return C::pkgcraft_pkgdep_intersects($self, $other);
 }
 
 sub DESTROY {
   my $self = shift;
-  C::pkgcraft_atom_free($self->{_ptr});
+  C::pkgcraft_pkgdep_free($self->{_ptr});
 }
