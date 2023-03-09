@@ -24,39 +24,35 @@ sub _from_ptr {
 
 sub category {
   my $self = shift;
-  return C::pkgcraft_dep_category($self->{_ptr});
+  return C::pkgcraft_cpv_category($self->{_ptr});
 }
 
 sub package {
   my $self = shift;
-  return C::pkgcraft_dep_package($self->{_ptr});
+  return C::pkgcraft_cpv_package($self->{_ptr});
 }
 
 sub version {
   my $self = shift;
-  my $ptr = C::pkgcraft_dep_version($self->{_ptr});
+  my $ptr = C::pkgcraft_cpv_version($self->{_ptr});
   return Pkgcraft::Version->_from_ptr($ptr);
 }
 
 sub revision {
   my $self = shift;
-  my $version = $self->version;
-  if (defined $version) {
-    return $version->revision;
-  }
-  return;
+  return $self->version->revision;
 }
 
 sub cpn {
   my $self = shift;
-  return C::pkgcraft_dep_cpn($self->{_ptr});
+  return C::pkgcraft_cpv_cpn($self->{_ptr});
 }
 
 use overload
   fallback => 1,
   '<=>' => sub {
     if ($_[0]->isa("Pkgcraft::Cpv") && $_[1]->isa("Pkgcraft::Cpv")) {
-      return C::pkgcraft_dep_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+      return C::pkgcraft_cpv_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
     }
     die "Invalid types for comparison!";
   },
@@ -65,16 +61,16 @@ use overload
 
 sub stringify {
   my $self = shift;
-  return C::pkgcraft_dep_str($self->{_ptr});
+  return C::pkgcraft_cpv_str($self->{_ptr});
 }
 
 sub intersects {
   my $self = shift->{_ptr};
   my $other = shift->{_ptr} // die "missing dep object";
-  return C::pkgcraft_dep_intersects($self, $other);
+  return C::pkgcraft_cpv_intersects($self, $other);
 }
 
 sub DESTROY {
   my $self = shift;
-  C::pkgcraft_dep_free($self->{_ptr});
+  C::pkgcraft_cpv_free($self->{_ptr});
 }

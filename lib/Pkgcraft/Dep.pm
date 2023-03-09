@@ -6,7 +6,7 @@ use warnings;
 
 require _pkgcraft_c;
 use Pkgcraft::Eapi;
-use parent 'Pkgcraft::Cpv';
+use Pkgcraft::Version;
 
 use constant {BLOCKER_STRONG => 1, BLOCKER_WEAK => 2};
 use constant {SLOT_OPERATOR_EQUAL => 1, SLOT_OPERATOR_STAR => 2};
@@ -32,6 +32,31 @@ sub blocker {
   my $blocker = C::pkgcraft_dep_blocker($self->{_ptr});
   if ($blocker > 0) {
     return $blocker;
+  }
+  return;
+}
+
+sub category {
+  my $self = shift;
+  return C::pkgcraft_dep_category($self->{_ptr});
+}
+
+sub package {
+  my $self = shift;
+  return C::pkgcraft_dep_package($self->{_ptr});
+}
+
+sub version {
+  my $self = shift;
+  my $ptr = C::pkgcraft_dep_version($self->{_ptr});
+  return Pkgcraft::Version->_from_ptr($ptr);
+}
+
+sub revision {
+  my $self = shift;
+  my $version = $self->version;
+  if (defined $version) {
+    return $version->revision;
   }
   return;
 }
@@ -67,9 +92,41 @@ sub repo {
   return C::pkgcraft_dep_repo($self->{_ptr});
 }
 
+sub cpn {
+  my $self = shift;
+  return C::pkgcraft_dep_cpn($self->{_ptr});
+}
+
 sub cpv {
   my $self = shift;
   return C::pkgcraft_dep_cpv($self->{_ptr});
+}
+
+use overload
+  fallback => 1,
+  '<=>' => sub {
+    if ($_[0]->isa("Pkgcraft::Dep") && $_[1]->isa("Pkgcraft::Dep")) {
+      return C::pkgcraft_dep_cmp($_[0]->{_ptr}, $_[1]->{_ptr});
+    }
+    die "Invalid types for comparison!";
+  },
+  'cmp' => sub { "$_[0]" cmp "$_[1]"; },
+  '""' => 'stringify';
+
+sub stringify {
+  my $self = shift;
+  return C::pkgcraft_dep_str($self->{_ptr});
+}
+
+sub intersects {
+  my $self = shift->{_ptr};
+  my $other = shift->{_ptr} // die "missing dep object";
+  return C::pkgcraft_dep_intersects($self, $other);
+}
+
+sub DESTROY {
+  my $self = shift;
+  C::pkgcraft_dep_free($self->{_ptr});
 }
 
 1;

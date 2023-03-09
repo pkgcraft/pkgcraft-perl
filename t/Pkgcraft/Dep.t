@@ -1,3 +1,4 @@
+
 use Test2::V0;
 use TOML::Tiny qw(from_toml);
 
@@ -15,29 +16,6 @@ my ($DEP_DATA, $err) = from_toml($toml);
 unless ($DEP_DATA) {
   die "Error parsing toml: $err";
 }
-
-# valid CPV
-my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
-ok($cpv->category eq "cat");
-ok($cpv->package eq "pkg");
-ok($cpv->version eq "1");
-is($cpv->revision, undef);
-ok($cpv->cpn eq "cat/pkg");
-ok($cpv eq "cat/pkg-1");
-
-# regular dep fails for CPV
-ok(dies { Pkgcraft::Cpv->new("=cat/pkg-1") });
-
-# invalid comparison types
-ok(dies { $cpv == "cat/pkg-1" });
-
-# missing string arg
-ok(dies { Pkgcraft::Cpv->new() });
-
-# valid comparisons
-my $cpv2 = Pkgcraft::Cpv->new("cat/pkg-2");
-ok($cpv != $cpv2);
-ok($cpv < $cpv2);
 
 # valid dep without EAPI
 my $dep = Pkgcraft::Dep->new("=cat/pkg-1");
@@ -102,15 +80,15 @@ foreach my $str (@{$DEP_DATA->{"invalid"}}) {
 # dep comparisons
 foreach my $str (@{$DEP_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;
-  my $a1 = Pkgcraft::Dep->new($s1);
-  my $a2 = Pkgcraft::Dep->new($s2);
+  my $d1 = Pkgcraft::Dep->new($s1);
+  my $d2 = Pkgcraft::Dep->new($s2);
   given ($op) {
-    when ("<") { ok($a1 < $a2, $str) }
-    when ("<=") { ok($a1 <= $a2, $str) }
-    when ("==") { ok($a1 == $a2, $str) }
-    when ("!=") { ok($a1 != $a2, $str) }
-    when (">=") { ok($a1 >= $a2, $str) }
-    when (">") { ok($a1 > $a2, $str) }
+    when ("<") { ok($d1 < $d2, $str) }
+    when ("<=") { ok($d1 <= $d2, $str) }
+    when ("==") { ok($d1 == $d2, $str) }
+    when ("!=") { ok($d1 != $d2, $str) }
+    when (">=") { ok($d1 >= $d2, $str) }
+    when (">") { ok($d1 > $d2, $str) }
     default { die "unknown operator: $op" }
   }
 }
@@ -131,14 +109,13 @@ foreach my $hash (@{$DEP_DATA->{"sorting"}}) {
 
 # TODO: use shared intersects test data
 # intersects
-my $a1 = Pkgcraft::Dep->new("=a/b-1.0.2");
-my $a2 = Pkgcraft::Dep->new("=a/b-1.0.2-r0");
-ok($a1->intersects($a2));
-$a1 = Pkgcraft::Dep->new("=a/b-0");
-$a2 = Pkgcraft::Dep->new("=a/b-1");
-ok(!$a1->intersects($a2));
-$a1 = Pkgcraft::Cpv->new("a/b-0");
-$a2 = Pkgcraft::Dep->new("=a/b-0*");
-ok($a1->intersects($a2));
+my $d1 = Pkgcraft::Dep->new("=a/b-1.0.2");
+my $d2 = Pkgcraft::Dep->new("=a/b-1.0.2-r0");
+ok($d1->intersects($d2));
+$d1 = Pkgcraft::Dep->new("=a/b-0");
+$d2 = Pkgcraft::Dep->new("=a/b-1");
+ok(!$d1->intersects($d2));
+$d2 = Pkgcraft::Dep->new("=a/b-0*");
+ok($d1->intersects($d2));
 
 done_testing;
