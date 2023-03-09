@@ -8,7 +8,7 @@ require _pkgcraft_c;
 
 use Storable qw(dclone);
 use parent 'Exporter';
-our @EXPORT = qw(EAPIS_OFFICIAL EAPIS $EAPI_LATEST);
+our @EXPORT = qw(EAPIS_OFFICIAL EAPIS $EAPI_LATEST_OFFICIAL $EAPI_LATEST);
 
 my $eapis_to_array = sub {
   my ($arr_ptr, $length, $start) = @_;
@@ -41,7 +41,7 @@ my $get_eapis_official = sub {
 
 my @eapis_official = &$get_eapis_official();
 my %eapis_official = &$eapis_to_hash(\@eapis_official);
-our $EAPI_LATEST = $eapis_official[$#eapis_official];
+our $EAPI_LATEST_OFFICIAL = $eapis_official[$#eapis_official];
 
 sub EAPIS_OFFICIAL {
   my $id = shift;
@@ -59,6 +59,7 @@ my $get_eapis_unofficial = sub {
 my @eapis_unofficial = &$get_eapis_unofficial();
 my @eapis = (@eapis_official, @eapis_unofficial);
 my %eapis = &$eapis_to_hash(\@eapis);
+our $EAPI_LATEST = $eapis[$#eapis];
 
 sub EAPIS {
   my $id = shift;

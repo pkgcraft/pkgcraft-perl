@@ -6,15 +6,16 @@ use warnings;
 
 use Pkgcraft::Eapi;
 
-# verify $EAPI_LATEST reference
+# verify EAPI aliases
+is($EAPI_LATEST_OFFICIAL, EAPIS($EAPI_LATEST_OFFICIAL));
 is($EAPI_LATEST, EAPIS($EAPI_LATEST));
 
 # EAPI feature support
 ok(!EAPIS(0)->has("slot_deps"));
 ok(EAPIS(1)->has("slot_deps"));
-ok($EAPI_LATEST->has("slot_deps"));
-ok(!$EAPI_LATEST->has("nonexistent"));
-ok(dies { $EAPI_LATEST->has() });
+ok($EAPI_LATEST_OFFICIAL->has("slot_deps"));
+ok(!$EAPI_LATEST_OFFICIAL->has("nonexistent"));
+ok(dies { $EAPI_LATEST_OFFICIAL->has() });
 
 # test globals access
 ok(keys %{EAPIS()} > keys %{EAPIS_OFFICIAL()});
