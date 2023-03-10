@@ -124,7 +124,10 @@ my $cpv = Pkgcraft::Cpv->new("a/b-1");
 $dep = Pkgcraft::Dep->new("=a/b-1");
 ok($dep->intersects($cpv));
 
+# missing argument
+ok(dies { $dep->intersects() });
+
 # invalid type
-ok(dies { $dep->intersects("") });
+ok(dies { $dep->intersects("=a/b-1") });
 
 done_testing;
