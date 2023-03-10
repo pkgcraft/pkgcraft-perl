@@ -84,7 +84,12 @@ $ffi->attach('pkgcraft_cpv_cpn' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_cpv_free' => ['dep_t']);
 $ffi->attach('pkgcraft_cpv_intersects' => ['dep_t', 'dep_t'] => 'bool');
 $ffi->attach('pkgcraft_cpv_new' => ['string'] => 'dep_t');
+$ffi->attach('pkgcraft_cpv_p' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_cpv_package' => ['dep_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pf' => ['dep_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pr' => ['dep_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pv' => ['dep_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pvr' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_cpv_str' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_cpv_version' => ['dep_t'] => 'version_t');
 

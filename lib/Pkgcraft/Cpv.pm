@@ -43,6 +43,31 @@ sub revision {
   return $self->version->revision;
 }
 
+sub p {
+  my $self = shift;
+  return C::pkgcraft_cpv_p($self->{_ptr});
+}
+
+sub pf {
+  my $self = shift;
+  return C::pkgcraft_cpv_pf($self->{_ptr});
+}
+
+sub pr {
+  my $self = shift;
+  return C::pkgcraft_cpv_pr($self->{_ptr});
+}
+
+sub pv {
+  my $self = shift;
+  return C::pkgcraft_cpv_pv($self->{_ptr});
+}
+
+sub pvr {
+  my $self = shift;
+  return C::pkgcraft_cpv_pvr($self->{_ptr});
+}
+
 sub cpn {
   my $self = shift;
   return C::pkgcraft_cpv_cpn($self->{_ptr});
