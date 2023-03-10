@@ -7,6 +7,7 @@ use strict;
 use warnings;
 no warnings qw(experimental);
 
+use Pkgcraft::Cpv;
 use Pkgcraft::Dep;
 
 # load test data
@@ -117,5 +118,13 @@ $d2 = Pkgcraft::Dep->new("=a/b-1");
 ok(!$d1->intersects($d2));
 $d2 = Pkgcraft::Dep->new("=a/b-0*");
 ok($d1->intersects($d2));
+
+# Cpv intersects
+my $cpv = Pkgcraft::Cpv->new("a/b-1");
+$dep = Pkgcraft::Dep->new("=a/b-1");
+ok($dep->intersects($cpv));
+
+# invalid type
+ok(dies { $dep->intersects("") });
 
 done_testing;

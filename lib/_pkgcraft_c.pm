@@ -31,6 +31,7 @@ $ffi->lib(find_lib_or_die(
 ));
 
 # types
+$ffi->type('opaque' => 'cpv_t');
 $ffi->type('opaque' => 'dep_t');
 $ffi->type('opaque' => 'eapi_t');
 $ffi->type('opaque' => 'version_t');
@@ -78,20 +79,21 @@ $ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');
 $ffi->attach('pkgcraft_eapis_range' => ['string', 'int*'] => 'opaque');
 
 # Cpv support
-$ffi->attach('pkgcraft_cpv_category' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_cmp' => ['dep_t', 'dep_t'] => 'int');
-$ffi->attach('pkgcraft_cpv_cpn' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_free' => ['dep_t']);
-$ffi->attach('pkgcraft_cpv_intersects' => ['dep_t', 'dep_t'] => 'bool');
-$ffi->attach('pkgcraft_cpv_new' => ['string'] => 'dep_t');
-$ffi->attach('pkgcraft_cpv_p' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_package' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_pf' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_pr' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_pv' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_pvr' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_str' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_cpv_version' => ['dep_t'] => 'version_t');
+$ffi->attach('pkgcraft_cpv_category' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_cmp' => ['cpv_t', 'cpv_t'] => 'int');
+$ffi->attach('pkgcraft_cpv_cpn' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_free' => ['cpv_t']);
+$ffi->attach('pkgcraft_cpv_intersects' => ['cpv_t', 'cpv_t'] => 'bool');
+$ffi->attach('pkgcraft_cpv_intersects_dep' => ['cpv_t', 'dep_t'] => 'bool');
+$ffi->attach('pkgcraft_cpv_new' => ['string'] => 'cpv_t');
+$ffi->attach('pkgcraft_cpv_p' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_package' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pf' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pr' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pv' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_pvr' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_str' => ['cpv_t'] => 'c_str');
+$ffi->attach('pkgcraft_cpv_version' => ['cpv_t'] => 'version_t');
 
 # Dep support
 $ffi->attach('pkgcraft_dep_blocker' => ['dep_t'] => 'int');
@@ -102,6 +104,7 @@ $ffi->attach('pkgcraft_dep_cpn' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_dep_cpv' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_dep_free' => ['dep_t']);
 $ffi->attach('pkgcraft_dep_intersects' => ['dep_t', 'dep_t'] => 'bool');
+$ffi->attach('pkgcraft_dep_intersects_cpv' => ['dep_t', 'cpv_t'] => 'bool');
 $ffi->attach('pkgcraft_dep_new' => ['string', 'eapi_t'] => 'dep_t');
 $ffi->attach('pkgcraft_dep_package' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_dep_repo' => ['dep_t'] => 'c_str');

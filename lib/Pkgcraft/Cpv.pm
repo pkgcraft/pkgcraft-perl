@@ -91,8 +91,13 @@ sub stringify {
 
 sub intersects {
   my $self = shift->{_ptr};
-  my $other = shift->{_ptr} // die "missing dep object";
-  return C::pkgcraft_cpv_intersects($self, $other);
+  my $other = shift // die "missing intersects object";
+  if ($other->isa("Pkgcraft::Cpv")) {
+    return C::pkgcraft_cpv_intersects($self, $other->{_ptr});
+  } elsif ($other->isa("Pkgcraft::Dep")) {
+    return C::pkgcraft_cpv_intersects_dep($self, $other->{_ptr});
+  }
+  die "Invalid type for intersects!";
 }
 
 sub DESTROY {

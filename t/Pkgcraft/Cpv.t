@@ -7,6 +7,7 @@ use warnings;
 no warnings qw(experimental);
 
 use Pkgcraft::Cpv;
+use Pkgcraft::Dep;
 
 # revisioned
 my $cpv = Pkgcraft::Cpv->new("cat/pkg-1-r2");
@@ -50,5 +51,19 @@ my $cpv1 = Pkgcraft::Cpv->new("cat/pkg-1");
 my $cpv2 = Pkgcraft::Cpv->new("cat/pkg-2");
 ok($cpv != $cpv2);
 ok($cpv < $cpv2);
+
+# intersects
+$cpv1 = Pkgcraft::Cpv->new("a/b-1");
+$cpv2 = Pkgcraft::Cpv->new("a/b-2");
+ok($cpv1->intersects($cpv1));
+ok(!$cpv1->intersects($cpv2));
+
+# Dep intersects
+my $dep = Pkgcraft::Dep->new("=a/b-1");
+ok($cpv1->intersects($dep));
+ok(!$cpv2->intersects($dep));
+
+# invalid type
+ok(dies { $cpv->intersects("") });
 
 done_testing;
