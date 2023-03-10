@@ -108,7 +108,6 @@ foreach my $hash (@{$DEP_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
-# TODO: use shared intersects test data
 # intersects
 my $d1 = Pkgcraft::Dep->new("=a/b-1.0.2");
 my $d2 = Pkgcraft::Dep->new("=a/b-1.0.2-r0");
@@ -129,5 +128,41 @@ ok(dies { $dep->intersects() });
 
 # invalid type
 ok(dies { $dep->intersects("=a/b-1") });
+
+# Convert string to Dep falling back to Cpv.
+sub parse {
+  my $str = shift;
+  my $val;
+  eval {
+    $val = Pkgcraft::Dep->new($str);
+    1;
+  } or do {
+    $val = Pkgcraft::Cpv->new($str);
+  };
+  return $val;
+}
+
+# use shared data for intersects tests
+foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
+  my %data = %$hash;
+  my @vals = @{$data{vals}};
+
+  # TODO: loop over all element pair permutations
+  for (0 .. $#vals - 1) {
+    my $v1 = parse($vals[$_]);
+    my $v2 = parse($vals[$_ + 1]);
+
+    # elements intersect themselves
+    ok($v1->intersects($v1));
+    ok($v2->intersects($v2));
+
+    # equal versions aren't sorted so reversing should restore the original order
+    if ($data{status}) {
+      ok($v1->intersects($v2));
+    } else {
+      ok(!$v1->intersects($v2));
+    }
+  }
+}
 
 done_testing;

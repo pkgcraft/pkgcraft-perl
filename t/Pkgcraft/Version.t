@@ -93,7 +93,7 @@ sub parse {
   return $ver;
 }
 
-# use shared test data for intersects tests
+# use shared data for intersects tests
 foreach my $hash (@{$VERSION_DATA->{"intersects"}}) {
   my %data = %$hash;
   my @vals = @{$data{vals}};
