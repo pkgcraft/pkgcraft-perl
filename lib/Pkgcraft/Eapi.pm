@@ -33,9 +33,9 @@ my $eapis_to_hash = sub {
 
 my $get_eapis_official = sub {
   my $length = 0;
-  my $ptr = C::pkgcraft_eapis_official(\$length);
-  my @eapis = &$eapis_to_array($ptr, $length, 0);
-  C::pkgcraft_eapis_free($ptr, $length);
+  my $c_eapis = C::pkgcraft_eapis_official(\$length);
+  my @eapis = &$eapis_to_array($c_eapis, $length, 0);
+  C::pkgcraft_eapis_free($c_eapis, $length);
   return @eapis;
 };
 
@@ -50,9 +50,9 @@ sub EAPIS_OFFICIAL {
 
 my $get_eapis_unofficial = sub {
   my $length = 0;
-  my $ptr = C::pkgcraft_eapis(\$length);
-  my @eapis = &$eapis_to_array($ptr, $length, $#eapis_official);
-  C::pkgcraft_eapis_free($ptr, $length);
+  my $c_eapis = C::pkgcraft_eapis(\$length);
+  my @eapis = &$eapis_to_array($c_eapis, $length, $#eapis_official);
+  C::pkgcraft_eapis_free($c_eapis, $length);
   return @eapis;
 };
 
@@ -80,9 +80,9 @@ use overload
 sub range {
   my $str = shift // die "missing range argument";
   my $length = 0;
-  my $ptr = C::pkgcraft_eapis_range($str, \$length) // die "invalid EAPI range: $str";
-  my @eapis = &$eapis_to_array($ptr, $length, 0);
-  C::pkgcraft_eapis_free($ptr, $length);
+  my $c_eapis = C::pkgcraft_eapis_range($str, \$length) // die "invalid EAPI range: $str";
+  my @eapis = &$eapis_to_array($c_eapis, $length, 0);
+  C::pkgcraft_eapis_free($c_eapis, $length);
   return \@eapis;
 }
 
