@@ -68,11 +68,17 @@ foreach my $hash (@{$VERSION_DATA->{"sorting"}}) {
 my $v1 = Pkgcraft::Version->new("1.0.2");
 my $v2 = Pkgcraft::Version->new("1.0.2-r0");
 ok($v1->intersects($v2));
-$v1 = Pkgcraft::Version->new("0");
-$v2 = Pkgcraft::Version->new("1");
+$v1 = Pkgcraft::Version->new("1");
+$v2 = Pkgcraft::Version->new("2");
 ok(!$v1->intersects($v2));
-$v1 = Pkgcraft::Version->new("0");
-$v2 = Pkgcraft::VersionWithOp->new("=0*");
+$v1 = Pkgcraft::Version->new("1");
+$v2 = Pkgcraft::VersionWithOp->new("=1*");
 ok($v1->intersects($v2));
+
+# missing argument
+ok(dies { $v1->intersects() });
+
+# invalid type
+ok(dies { $v1->intersects("1") });
 
 done_testing;

@@ -43,9 +43,9 @@ package Pkgcraft::Version {
   }
 
   sub intersects {
-    my $self = shift->{_ptr};
-    my $other = shift->{_ptr} // die "missing version object";
-    return C::pkgcraft_version_intersects($self, $other);
+    my $self = shift;
+    my $other = shift // die "missing version object";
+    return C::pkgcraft_version_intersects($self->{_ptr}, $other->{_ptr});
   }
 
   sub DESTROY {
