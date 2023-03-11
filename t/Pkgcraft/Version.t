@@ -63,25 +63,8 @@ foreach my $hash (@{$VERSION_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
-# intersects
-my $v1 = Pkgcraft::Version->new("1.0.2");
-my $v2 = Pkgcraft::Version->new("1.0.2-r0");
-ok($v1->intersects($v2));
-$v1 = Pkgcraft::Version->new("1");
-$v2 = Pkgcraft::Version->new("2");
-ok(!$v1->intersects($v2));
-$v1 = Pkgcraft::Version->new("1");
-$v2 = Pkgcraft::VersionWithOp->new("=1*");
-ok($v1->intersects($v2));
-
-# missing argument
-ok(dies { $v1->intersects() });
-
-# invalid type
-ok(dies { $v1->intersects("1") });
-
 # Convert string to non-op version falling back to op-ed version.
-sub parse {
+sub parseVersion {
   my $str = shift;
   my $ver;
   eval {
@@ -93,15 +76,15 @@ sub parse {
   return $ver;
 }
 
-# use shared data for intersects tests
+# intersects
 foreach my $hash (@{$VERSION_DATA->{"intersects"}}) {
   my %data = %$hash;
   my @vals = @{$data{vals}};
 
   # TODO: loop over all element pair permutations
   for (0 .. $#vals - 1) {
-    my $v1 = parse($vals[$_]);
-    my $v2 = parse($vals[$_ + 1]);
+    my $v1 = parseVersion($vals[$_]);
+    my $v2 = parseVersion($vals[$_ + 1]);
 
     # elements intersect themselves
     ok($v1->intersects($v1));
@@ -115,5 +98,11 @@ foreach my $hash (@{$VERSION_DATA->{"intersects"}}) {
     }
   }
 }
+
+# missing argument
+ok(dies { $ver->intersects() });
+
+# invalid type
+ok(dies { $ver->intersects("1") });
 
 done_testing;

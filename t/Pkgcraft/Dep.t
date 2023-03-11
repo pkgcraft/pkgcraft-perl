@@ -107,29 +107,8 @@ foreach my $hash (@{$DEP_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
-# intersects
-my $d1 = Pkgcraft::Dep->new("=a/b-1.0.2");
-my $d2 = Pkgcraft::Dep->new("=a/b-1.0.2-r0");
-ok($d1->intersects($d2));
-$d1 = Pkgcraft::Dep->new("=a/b-0");
-$d2 = Pkgcraft::Dep->new("=a/b-1");
-ok(!$d1->intersects($d2));
-$d2 = Pkgcraft::Dep->new("=a/b-0*");
-ok($d1->intersects($d2));
-
-# Cpv intersects
-my $cpv = Pkgcraft::Cpv->new("a/b-1");
-$dep = Pkgcraft::Dep->new("=a/b-1");
-ok($dep->intersects($cpv));
-
-# missing argument
-ok(dies { $dep->intersects() });
-
-# invalid type
-ok(dies { $dep->intersects("=a/b-1") });
-
 # Convert string to Dep falling back to Cpv.
-sub parse {
+sub parseDepOrCpv {
   my $str = shift;
   my $val;
   eval {
@@ -141,15 +120,15 @@ sub parse {
   return $val;
 }
 
-# use shared data for intersects tests
+# intersects
 foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
   my %data = %$hash;
   my @vals = @{$data{vals}};
 
   # TODO: loop over all element pair permutations
   for (0 .. $#vals - 1) {
-    my $v1 = parse($vals[$_]);
-    my $v2 = parse($vals[$_ + 1]);
+    my $v1 = parseDepOrCpv($vals[$_]);
+    my $v2 = parseDepOrCpv($vals[$_ + 1]);
 
     # elements intersect themselves
     ok($v1->intersects($v1));
@@ -163,5 +142,16 @@ foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
     }
   }
 }
+
+# Cpv intersects
+my $cpv = Pkgcraft::Cpv->new("a/b-1");
+$dep = Pkgcraft::Dep->new("=a/b-1");
+ok($dep->intersects($cpv));
+
+# missing argument
+ok(dies { $dep->intersects() });
+
+# invalid type
+ok(dies { $dep->intersects("=a/b-1") });
 
 done_testing;
