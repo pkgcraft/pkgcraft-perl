@@ -54,6 +54,7 @@ $ffi->custom_type(
 # array support
 $ffi->attach_cast('cast_array', 'opaque', 'opaque[]');
 $ffi->attach('pkgcraft_str_array_free' => ['opaque', 'int']);
+$ffi->attach('pkgcraft_array_free' => ['opaque', 'int']);
 
 sub string_array {
   my ($ptr, $length) = @_;
@@ -74,7 +75,6 @@ $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
 $ffi->attach('pkgcraft_eapi_cmp' => ['eapi_t', 'eapi_t'] => 'int');
 $ffi->attach('pkgcraft_eapi_has' => ['eapi_t', 'string'] => 'bool');
 $ffi->attach('pkgcraft_eapis' => ['int*'] => 'opaque');
-$ffi->attach('pkgcraft_eapis_free' => ['opaque', 'int']);
 $ffi->attach('pkgcraft_eapis_official' => ['int*'] => 'opaque');
 $ffi->attach('pkgcraft_eapis_range' => ['string', 'int*'] => 'opaque');
 

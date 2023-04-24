@@ -35,7 +35,7 @@ my $get_eapis_official = sub {
   my $length = 0;
   my $c_eapis = C::pkgcraft_eapis_official(\$length);
   my @eapis = &$eapis_to_array($c_eapis, $length, 0);
-  C::pkgcraft_eapis_free($c_eapis, $length);
+  C::pkgcraft_array_free($c_eapis, $length);
   return @eapis;
 };
 
@@ -52,7 +52,7 @@ my $get_eapis_unofficial = sub {
   my $length = 0;
   my $c_eapis = C::pkgcraft_eapis(\$length);
   my @eapis = &$eapis_to_array($c_eapis, $length, $#eapis_official);
-  C::pkgcraft_eapis_free($c_eapis, $length);
+  C::pkgcraft_array_free($c_eapis, $length);
   return @eapis;
 };
 
@@ -82,7 +82,7 @@ sub range {
   my $length = 0;
   my $c_eapis = C::pkgcraft_eapis_range($str, \$length) // die "invalid EAPI range: $str";
   my @eapis = &$eapis_to_array($c_eapis, $length, 0);
-  C::pkgcraft_eapis_free($c_eapis, $length);
+  C::pkgcraft_array_free($c_eapis, $length);
   return \@eapis;
 }
 
