@@ -22,15 +22,14 @@ ok($ver eq "1-r2");
 
 # missing string arg
 ok(dies { Pkgcraft::Version->new() });
-ok(dies { Pkgcraft::VersionWithOp->new() });
 
 # invalid versions
 ok(dies { Pkgcraft::Version->new("r2") });
-ok(dies { Pkgcraft::VersionWithOp->new("1-r2") });
+ok(dies { Pkgcraft::Version->new("-2") });
 
 # invalid comparisons
 ok(dies { $ver == "1-r2" });
-ok(dies { Pkgcraft::VersionWithOp->new(">1-r2") == ">1-r2" });
+ok(dies { Pkgcraft::Version->new(">1-r2") == ">1-r2" });
 
 # version comparisons
 foreach my $str (@{$VERSION_DATA->{"compares"}}) {
@@ -63,19 +62,6 @@ foreach my $hash (@{$VERSION_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
-# Convert string to non-op version falling back to op-ed version.
-sub parseVersion {
-  my $str = shift;
-  my $ver;
-  eval {
-    $ver = Pkgcraft::Version->new($str);
-    1;
-  } or do {
-    $ver = Pkgcraft::VersionWithOp->new($str);
-  };
-  return $ver;
-}
-
 # intersects
 foreach my $hash (@{$VERSION_DATA->{"intersects"}}) {
   my %data = %$hash;
@@ -83,8 +69,8 @@ foreach my $hash (@{$VERSION_DATA->{"intersects"}}) {
 
   # TODO: loop over all element pair permutations
   for (0 .. $#vals - 1) {
-    my $v1 = parseVersion($vals[$_]);
-    my $v2 = parseVersion($vals[$_ + 1]);
+    my $v1 = Pkgcraft::Version->new($vals[$_]);
+    my $v2 = Pkgcraft::Version->new($vals[$_ + 1]);
 
     # elements intersect themselves
     ok($v1->intersects($v1));

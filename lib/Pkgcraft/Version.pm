@@ -54,21 +54,4 @@ package Pkgcraft::Version {
   }
 }
 
-package Pkgcraft::VersionWithOp {
-  use parent 'Pkgcraft::Version';
-
-  sub new {
-    my $class = shift;
-    my $str = shift // die "missing version string";
-    my $ptr = C::pkgcraft_version_with_op($str)
-      // die "invalid version with operator: $str";
-    return bless {_ptr => $ptr}, $class;
-  }
-
-  sub stringify {
-    my $self = shift;
-    return C::pkgcraft_version_str_with_op($self->{_ptr});
-  }
-}
-
 1;

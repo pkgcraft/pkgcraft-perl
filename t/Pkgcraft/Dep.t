@@ -54,7 +54,7 @@ foreach my $hash (@{$DEP_DATA->{"valid"}}) {
       is($dep->blocker, $data{blocker});
     }
     if (defined $data{version}) {
-      ok($dep->version == Pkgcraft::VersionWithOp->new($data{version}));
+      ok($dep->version == Pkgcraft::Version->new($data{version}));
     } else {
       is($dep->version, $data{version});
     }

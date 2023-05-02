@@ -31,6 +31,7 @@ $ffi->lib(find_lib_or_die(
 ));
 
 # types
+$ffi->type('opaque' => 'config_t');
 $ffi->type('opaque' => 'cpv_t');
 $ffi->type('opaque' => 'dep_t');
 $ffi->type('opaque' => 'eapi_t');
@@ -69,6 +70,12 @@ sub string_array {
   }
   return;
 }
+
+# config support
+$ffi->attach('pkgcraft_config_free' => [] => 'config_t');
+$ffi->attach('pkgcraft_config_new' => [] => 'config_t');
+$ffi->attach(
+  'pkgcraft_config_load_repos_conf' => ['config_t', 'string', 'int*'] => 'opaque');
 
 # EAPI support
 $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
@@ -123,5 +130,3 @@ $ffi->attach('pkgcraft_version_intersects' => ['version_t', 'version_t'] => 'boo
 $ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
 $ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'c_str');
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
-$ffi->attach('pkgcraft_version_str_with_op' => ['version_t'] => 'c_str');
-$ffi->attach('pkgcraft_version_with_op' => ['string'] => 'version_t');
