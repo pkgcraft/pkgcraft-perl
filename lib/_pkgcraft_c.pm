@@ -74,8 +74,8 @@ sub string_array {
 # config support
 $ffi->attach('pkgcraft_config_free' => [] => 'config_t');
 $ffi->attach('pkgcraft_config_new' => [] => 'config_t');
-$ffi->attach(
-  'pkgcraft_config_load_repos_conf' => ['config_t', 'string', 'int*'] => 'opaque');
+$ffi->attach('pkgcraft_config_load' => ['config_t'] => 'opaque');
+$ffi->attach('pkgcraft_config_load_portage_conf' => ['config_t', 'string'] => 'opaque');
 
 # EAPI support
 $ffi->attach('pkgcraft_eapi_as_str' => ['eapi_t'] => 'c_str');
