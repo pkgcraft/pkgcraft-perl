@@ -7,11 +7,11 @@ WriteMakefile(
     VERSION_FROM      => 'lib/Pkgcraft.pm',
     PREREQ_PM         => {
         'FFI::CheckLib' => '0.31',
-        'FFI::Platypus' => '2.00',
+        'FFI::Platypus' => '2.08',
     },
     TEST_REQUIRES => {
-        'Test2::V0' => '0.000145',
-        'TOML::Tiny' => '0.15',
+        'Test2::V0' => '0.000155',
+        'TOML::Tiny' => '0.16',
     },
     MIN_PERL_VERSION  => '5.30.0',
     ABSTRACT_FROM     => 'lib/Pkgcraft.pod',
