@@ -11,9 +11,7 @@ is($EAPI_LATEST_OFFICIAL, EAPIS($EAPI_LATEST_OFFICIAL));
 is($EAPI_LATEST, EAPIS($EAPI_LATEST));
 
 # EAPI feature support
-ok(!EAPIS(0)->has("slot_deps"));
-ok(EAPIS(1)->has("slot_deps"));
-ok($EAPI_LATEST_OFFICIAL->has("slot_deps"));
+ok($EAPI_LATEST_OFFICIAL->has("usev_two_args"));
 ok(!$EAPI_LATEST_OFFICIAL->has("nonexistent"));
 ok(dies { $EAPI_LATEST_OFFICIAL->has() });
 
@@ -25,15 +23,15 @@ foreach my $k (keys %{EAPIS_OFFICIAL()}) {
   is(EAPIS($k), EAPIS_OFFICIAL($k));
 }
 
-is(Pkgcraft::Eapi::range("..2"), [EAPIS(0), EAPIS(1)]);
-is(Pkgcraft::Eapi::range("3..4"), [EAPIS(3)]);
+is(Pkgcraft::Eapi::range("..6"), [EAPIS(5)]);
+is(Pkgcraft::Eapi::range("7..8"), [EAPIS(7)]);
 ok(dies { Pkgcraft::Eapi::range("..9999") });
 ok(dies { Pkgcraft::Eapi::range() });
 
 # comparisons
-ok(EAPIS(0) == EAPIS_OFFICIAL(0));
-ok(EAPIS(1) > EAPIS(0));
-ok(dies { EAPIS(0) == "0" });
-ok(EAPIS(0) eq "0");
+ok(EAPIS(8) == EAPIS_OFFICIAL(8));
+ok(EAPIS(8) > EAPIS(7));
+ok(dies { EAPIS(8) == "8" });
+ok(EAPIS(8) eq "8");
 
 done_testing;

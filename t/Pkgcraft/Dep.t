@@ -24,9 +24,9 @@ ok($dep->cpv eq "cat/pkg-1");
 # missing string arg
 ok(dies { Pkgcraft::Dep->new() });
 
-# invalid dep with explicit EAPI (slot deps in EAPI >= 1)
-ok(dies { Pkgcraft::Dep->new("cat/pkg:0", 0) });
-$dep = Pkgcraft::Dep->new("cat/pkg:0", 1);
+# explicit EAPI
+ok(dies { Pkgcraft::Dep->new("cat/pkg::repo", 8) });
+$dep = Pkgcraft::Dep->new("cat/pkg:0", 8);
 is($dep->slot, "0");
 
 # repo dep without EAPI (defaults to extended support)
