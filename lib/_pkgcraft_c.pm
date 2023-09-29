@@ -9,8 +9,8 @@ use FFI::CheckLib qw(find_lib_or_die);
 use FFI::Platypus;
 
 # version requirements for pkgcraft C library
-my $MIN_VERSION = version->parse('0.0.11');
-my $MAX_VERSION = version->parse('0.0.11');
+my $MIN_VERSION = version->parse('0.0.12');
+my $MAX_VERSION = version->parse('0.0.12');
 
 my $ffi = FFI::Platypus->new(api => 2);
 $ffi->lib(find_lib_or_die(
