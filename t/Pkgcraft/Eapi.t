@@ -11,7 +11,7 @@ is($EAPI_LATEST_OFFICIAL, EAPIS($EAPI_LATEST_OFFICIAL));
 is($EAPI_LATEST, EAPIS($EAPI_LATEST));
 
 # EAPI feature support
-ok($EAPI_LATEST_OFFICIAL->has("usev_two_args"));
+ok($EAPI_LATEST_OFFICIAL->has("UsevTwoArgs"));
 ok(!$EAPI_LATEST_OFFICIAL->has("nonexistent"));
 ok(dies { $EAPI_LATEST_OFFICIAL->has() });
 
