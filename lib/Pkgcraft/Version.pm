@@ -5,6 +5,7 @@ use warnings;
 require _pkgcraft_c;
 
 package Pkgcraft::Revision {
+
   sub new {
     my $class = shift;
     my $str = shift // die "missing revision string";
@@ -43,6 +44,7 @@ package Pkgcraft::Revision {
 }
 
 package Pkgcraft::Version {
+
   sub new {
     my $class = shift;
     my $str = shift // die "missing version string";
