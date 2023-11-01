@@ -58,7 +58,11 @@ foreach my $hash (@{$DEP_DATA->{"valid"}}) {
     } else {
       is($dep->version, $data{version});
     }
-    is($dep->revision, $data{revision});
+    if (defined $data{revision}) {
+      ok($dep->revision == Pkgcraft::Revision->new($data{revision}));
+    } else {
+      is($dep->revision, $data{revision});
+    }
     is($dep->slot, $data{slot});
     is($dep->subslot, $data{subslot});
     if (defined $data{slot_op}) {

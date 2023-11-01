@@ -17,7 +17,7 @@ unless ($VERSION_DATA) {
 }
 
 my $ver = Pkgcraft::Version->new("1-r2");
-ok($ver->revision eq "2");
+ok($ver->revision == Pkgcraft::Revision->new("2"));
 ok($ver eq "1-r2");
 
 # missing string arg

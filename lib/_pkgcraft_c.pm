@@ -36,6 +36,7 @@ $ffi->type('opaque' => 'cpv_t');
 $ffi->type('opaque' => 'dep_t');
 $ffi->type('opaque' => 'eapi_t');
 $ffi->type('opaque' => 'version_t');
+$ffi->type('opaque' => 'revision_t');
 
 # string support
 $ffi->attach_cast('cast_string', 'opaque', 'string');
@@ -128,5 +129,11 @@ $ffi->attach('pkgcraft_version_cmp' => ['version_t', 'version_t'] => 'int');
 $ffi->attach('pkgcraft_version_free' => ['version_t']);
 $ffi->attach('pkgcraft_version_intersects' => ['version_t', 'version_t'] => 'bool');
 $ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
-$ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'c_str');
+$ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'revision_t');
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
+
+# revision support
+$ffi->attach('pkgcraft_revision_cmp' => ['revision_t', 'revision_t'] => 'int');
+$ffi->attach('pkgcraft_revision_free' => ['revision_t']);
+$ffi->attach('pkgcraft_revision_new' => ['string'] => 'revision_t');
+$ffi->attach('pkgcraft_revision_str' => ['revision_t'] => 'c_str');
