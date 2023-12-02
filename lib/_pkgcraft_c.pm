@@ -121,7 +121,7 @@ $ffi->attach('pkgcraft_dep_slot_op' => ['dep_t'] => 'int');
 $ffi->attach('pkgcraft_dep_slot_op_from_str' => ['string'] => 'int');
 $ffi->attach('pkgcraft_dep_str' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_dep_subslot' => ['dep_t'] => 'c_str');
-$ffi->attach('pkgcraft_dep_use_deps' => ['dep_t', 'int*'] => 'opaque');
+$ffi->attach('pkgcraft_dep_use_deps_str' => ['dep_t', 'int*'] => 'opaque');
 $ffi->attach('pkgcraft_dep_version' => ['dep_t'] => 'version_t');
 
 # version support

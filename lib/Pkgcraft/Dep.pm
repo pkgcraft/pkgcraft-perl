@@ -83,7 +83,7 @@ sub slot_op {
 sub use {
   my $self = shift;
   my $length = 0;
-  my $use = C::pkgcraft_dep_use_deps($self->{_ptr}, \$length);
+  my $use = C::pkgcraft_dep_use_deps_str($self->{_ptr}, \$length);
   return C::string_array($use, $length);
 }
 
