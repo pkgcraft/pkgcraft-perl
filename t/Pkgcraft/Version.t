@@ -31,6 +31,12 @@ ok(dies { Pkgcraft::Version->new("-2") });
 ok(dies { $ver == "1-r2" });
 ok(dies { Pkgcraft::Version->new(">1-r2") == ">1-r2" });
 
+# valid
+foreach my $str (@{$VERSION_DATA->{"valid"}}) {
+  ok(Pkgcraft::Version->new($str));
+  ok(Pkgcraft::Version->parse($str));
+}
+
 # version comparisons
 foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;

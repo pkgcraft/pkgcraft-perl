@@ -131,6 +131,7 @@ $ffi->attach('pkgcraft_version_intersects' => ['version_t', 'version_t'] => 'boo
 $ffi->attach('pkgcraft_version_new' => ['string'] => 'version_t');
 $ffi->attach('pkgcraft_version_revision' => ['version_t'] => 'revision_t');
 $ffi->attach('pkgcraft_version_str' => ['version_t'] => 'c_str');
+$ffi->attach('pkgcraft_version_parse' => ['string'] => 'opaque');
 
 # revision support
 $ffi->attach('pkgcraft_revision_cmp' => ['revision_t', 'revision_t'] => 'int');
