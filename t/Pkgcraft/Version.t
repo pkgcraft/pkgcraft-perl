@@ -33,8 +33,14 @@ ok(dies { Pkgcraft::Version->new(">1-r2") == ">1-r2" });
 
 # valid
 foreach my $str (@{$VERSION_DATA->{"valid"}}) {
-  ok(Pkgcraft::Version->new($str));
-  ok(Pkgcraft::Version->parse($str));
+  ok(lives { Pkgcraft::Version->new($str) });
+  ok(Pkgcraft::Version->parse($str), "$str is not a valid version");
+}
+
+# invalid
+foreach my $str (@{$VERSION_DATA->{"invalid"}}) {
+  ok(dies { Pkgcraft::Version->new($str) });
+  ok(!Pkgcraft::Version->parse($str), "$str is a valid version");
 }
 
 # version comparisons
@@ -42,15 +48,13 @@ foreach my $str (@{$VERSION_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;
   my $v1 = Pkgcraft::Version->new($s1);
   my $v2 = Pkgcraft::Version->new($s2);
-  given ($op) {
-    when ("<") { ok($v1 < $v2, $str) }
-    when ("<=") { ok($v1 <= $v2, $str) }
-    when ("==") { ok($v1 == $v2, $str) }
-    when ("!=") { ok($v1 != $v2, $str) }
-    when (">=") { ok($v1 >= $v2, $str) }
-    when (">") { ok($v1 > $v2, $str) }
-    default { die "unknown operator: $op" }
-  }
+  if ($op eq "<") { ok($v1 < $v2, $str) }
+  elsif ($op eq "<=") { ok($v1 <= $v2, $str) }
+  elsif ($op eq "==") { ok($v1 == $v2, $str) }
+  elsif ($op eq "!=") { ok($v1 != $v2, $str) }
+  elsif ($op eq ">=") { ok($v1 >= $v2, $str) }
+  elsif ($op eq ">") { ok($v1 > $v2, $str) }
+  else { die "unknown operator: $op" }
 }
 
 # version sorting

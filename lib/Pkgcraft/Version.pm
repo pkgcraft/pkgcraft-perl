@@ -61,9 +61,9 @@ package Pkgcraft::Version {
   }
 
   sub parse {
+    my $class = shift;
     my $str = shift // die "missing version string";
-    my $ptr = C::pkgcraft_version_parse($str);
-    return (defined $ptr);
+    return (defined C::pkgcraft_version_parse($str));
   }
 
   sub revision {

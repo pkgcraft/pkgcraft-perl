@@ -86,15 +86,13 @@ foreach my $str (@{$DEP_DATA->{"compares"}}) {
   my ($s1, $op, $s2) = split ' ', $str;
   my $d1 = Pkgcraft::Dep->new($s1);
   my $d2 = Pkgcraft::Dep->new($s2);
-  given ($op) {
-    when ("<") { ok($d1 < $d2, $str) }
-    when ("<=") { ok($d1 <= $d2, $str) }
-    when ("==") { ok($d1 == $d2, $str) }
-    when ("!=") { ok($d1 != $d2, $str) }
-    when (">=") { ok($d1 >= $d2, $str) }
-    when (">") { ok($d1 > $d2, $str) }
-    default { die "unknown operator: $op" }
-  }
+  if ($op eq "<") { ok($d1 < $d2, $str) }
+  elsif ($op eq "<=") { ok($d1 <= $d2, $str) }
+  elsif ($op eq "==") { ok($d1 == $d2, $str) }
+  elsif ($op eq "!=") { ok($d1 != $d2, $str) }
+  elsif ($op eq ">=") { ok($d1 >= $d2, $str) }
+  elsif ($op eq ">") { ok($d1 > $d2, $str) }
+  else { die "unknown operator: $op" }
 }
 
 # dep sorting
