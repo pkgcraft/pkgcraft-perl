@@ -109,19 +109,6 @@ foreach my $hash (@{$DEP_DATA->{"sorting"}}) {
   is(\@sorted, $data{sorted});
 }
 
-# Convert string to Dep falling back to Cpv.
-sub parseDepOrCpv {
-  my $str = shift;
-  my $val;
-  eval {
-    $val = Pkgcraft::Dep->new($str);
-    1;
-  } or do {
-    $val = Pkgcraft::Cpv->new($str);
-  };
-  return $val;
-}
-
 # intersects
 foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
   my %data = %$hash;
@@ -129,8 +116,8 @@ foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
 
   # TODO: loop over all element pair permutations
   for (0 .. $#vals - 1) {
-    my $v1 = parseDepOrCpv($vals[$_]);
-    my $v2 = parseDepOrCpv($vals[$_ + 1]);
+    my $v1 = Pkgcraft::Dep->new($vals[$_]);
+    my $v2 = Pkgcraft::Dep->new($vals[$_ + 1]);
 
     # elements intersect themselves
     ok($v1->intersects($v1));
