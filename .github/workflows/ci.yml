@@ -82,7 +82,7 @@ jobs:
 
     - name: Download pkgcraft-c library from running workflow
       if: ${{ inputs.event-type != '' }}
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: pkgcraft-c-${{ runner.os }}
         path: ${{ env.pkgcraft_dir }}
