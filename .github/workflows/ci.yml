@@ -101,7 +101,7 @@ jobs:
         enable-modules-cache: false
 
     - name: Set up cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: local
         key: ${{ github.job }}-${{ runner.os }}-perl-${{ steps.perl.outputs.perl-version }}-${{ hashFiles('Makefile.PL') }}
