@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 require _pkgcraft_c;
+use Pkgcraft::Cpn;
 use Pkgcraft::Eapi;
 use Pkgcraft::Version;
 
@@ -13,7 +14,7 @@ use constant {SLOT_OPERATOR_EQUAL => 1, SLOT_OPERATOR_STAR => 2};
 
 sub new {
   my $class = shift;
-  my $str = shift // die "missing dep string";
+  my $str = shift // die "missing Dep string";
   my $eapi = shift;
 
   my $eapi_ptr = undef;
@@ -23,7 +24,7 @@ sub new {
     $eapi_ptr = $eapi->{_ptr};
   }
 
-  my $ptr = C::pkgcraft_dep_new($str, $eapi_ptr) // die "invalid dep: $str";
+  my $ptr = C::pkgcraft_dep_new($str, $eapi_ptr) // die "invalid Dep: $str";
   return bless {_ptr => $ptr}, $class;
 }
 
@@ -94,7 +95,8 @@ sub repo {
 
 sub cpn {
   my $self = shift;
-  return C::pkgcraft_dep_cpn($self->{_ptr});
+  my $ptr = C::pkgcraft_dep_cpn($self->{_ptr});
+  return Pkgcraft::Cpn->_from_ptr($ptr);
 }
 
 sub cpv {

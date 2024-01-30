@@ -78,7 +78,7 @@ foreach my $hash (@{$DEP_DATA->{"valid"}}) {
 
 # invalid deps
 foreach my $str (@{$DEP_DATA->{"invalid"}}) {
-  like(dies { Pkgcraft::Dep->new($str) }, qr/invalid dep: \Q$str\E/, "invalid dep: $str");
+  like(dies { Pkgcraft::Dep->new($str) }, qr/invalid Dep: \Q$str\E/, "invalid Dep: $str");
 }
 
 # dep comparisons

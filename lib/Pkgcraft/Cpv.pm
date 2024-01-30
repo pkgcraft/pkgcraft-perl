@@ -5,12 +5,13 @@ use strict;
 use warnings;
 
 require _pkgcraft_c;
+use Pkgcraft::Cpn;
 use Pkgcraft::Version;
 
 sub new {
   my $class = shift;
-  my $str = shift // die "missing CPV string";
-  my $ptr = C::pkgcraft_cpv_new($str) // die "invalid CPV: $str";
+  my $str = shift // die "missing Cpn string";
+  my $ptr = C::pkgcraft_cpv_new($str) // die "invalid Cpv: $str";
   return bless {_ptr => $ptr}, $class;
 }
 
@@ -70,7 +71,8 @@ sub pvr {
 
 sub cpn {
   my $self = shift;
-  return C::pkgcraft_cpv_cpn($self->{_ptr});
+  my $ptr = C::pkgcraft_cpv_cpn($self->{_ptr});
+  return Pkgcraft::Cpn->_from_ptr($ptr);
 }
 
 use overload
