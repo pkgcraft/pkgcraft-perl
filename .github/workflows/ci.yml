@@ -130,7 +130,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: ${{ inputs.event-type == '' && github.ref_name == 'main' }}
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.json
