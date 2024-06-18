@@ -130,7 +130,7 @@ jobs:
         cover -test -ignore_re "local" -report codecov
 
     - name: Upload coverage to Codecov
-      if: ${{ inputs.event-type == '' && github.ref_name == 'main' }}
+      if: ${{ inputs.event-type == '' && github.ref_name == 'main' && matrix.perl-version == '5' }}
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
