@@ -134,7 +134,7 @@ foreach my $hash (@{$DEP_DATA->{"intersects"}}) {
 }
 
 # Cpv intersects
-my $cpv = Pkgcraft::Cpv->new("a/b-1");
+$cpv = Pkgcraft::Cpv->new("a/b-1");
 $dep = Pkgcraft::Dep->new("=a/b-1");
 ok($dep->intersects($cpv));
 
