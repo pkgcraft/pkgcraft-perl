@@ -19,7 +19,8 @@ unless ($DEP_DATA) {
 
 # valid dep without EAPI
 my $dep = Pkgcraft::Dep->new("=cat/pkg-1");
-ok($dep->cpv eq "cat/pkg-1");
+my $cpv = Pkgcraft::Cpv->new("cat/pkg-1");
+ok($dep->cpv eq $cpv);
 
 # missing string arg
 ok(dies { Pkgcraft::Dep->new() });

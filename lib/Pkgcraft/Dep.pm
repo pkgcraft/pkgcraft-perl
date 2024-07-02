@@ -101,7 +101,11 @@ sub cpn {
 
 sub cpv {
   my $self = shift;
-  return C::pkgcraft_dep_cpv($self->{_ptr});
+  my $ptr = C::pkgcraft_dep_cpv($self->{_ptr});
+  if (defined $ptr) {
+    return Pkgcraft::Cpv->_from_ptr($ptr);
+  }
+  return;
 }
 
 use overload

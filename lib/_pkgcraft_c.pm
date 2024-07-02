@@ -118,7 +118,7 @@ $ffi->attach('pkgcraft_dep_blocker_from_str' => ['string'] => 'int');
 $ffi->attach('pkgcraft_dep_category' => ['dep_t'] => 'c_str');
 $ffi->attach('pkgcraft_dep_cmp' => ['dep_t', 'dep_t'] => 'int');
 $ffi->attach('pkgcraft_dep_cpn' => ['dep_t'] => 'cpn_t');
-$ffi->attach('pkgcraft_dep_cpv' => ['dep_t'] => 'c_str');
+$ffi->attach('pkgcraft_dep_cpv' => ['dep_t'] => 'cpv_t');
 $ffi->attach('pkgcraft_dep_free' => ['dep_t']);
 $ffi->attach('pkgcraft_dep_intersects' => ['dep_t', 'dep_t'] => 'bool');
 $ffi->attach('pkgcraft_dep_intersects_cpv' => ['dep_t', 'cpv_t'] => 'bool');
