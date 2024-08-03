@@ -79,14 +79,17 @@ jobs:
         workflow_conclusion: ""
         search_artifacts: true
         name: pkgcraft-c-${{ runner.os }}
-        path: ${{ env.pkgcraft_dir }}
 
     - name: Download pkgcraft-c library from running workflow
       if: ${{ inputs.event-type != '' }}
       uses: actions/download-artifact@v4
       with:
         name: pkgcraft-c-${{ runner.os }}
-        path: ${{ env.pkgcraft_dir }}
+
+    - name: Unpack library
+      run: |
+        mkdir -p "${pkgcraft_dir}"
+        tar -Jxf pkgcraft-c.tar.xz -C "${pkgcraft_dir}"
 
     - name: Checkout code
       uses: actions/checkout@v4
